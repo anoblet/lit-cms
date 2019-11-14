@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "save": "git add . && git commit -m \"Chore: Save\"",
     "start": "es-dev-server --app-index index.html --preserve-symlinks --file-extensions .ts --node-resolve --babel --open --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
