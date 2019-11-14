@@ -15,7 +15,7 @@ import page from "page";
   const app: any = document.querySelector("app-component");
   await app.updateComplete;
 
-  const outlet: HTMLElement = app.shadowRoot.querySelector("#main");
+  const outlet: HTMLElement = app.shadowRoot.querySelector("#outlet");
 
   const changeRoute = (template: TemplateResult) => {
     render(template, outlet);

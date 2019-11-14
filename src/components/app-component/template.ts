@@ -20,7 +20,7 @@ export default function() {
           ${drawer()}
         </div>
         <div slot="main">
-          <div id="main"></div></div
+          <div id="outlet"></div></div
       ></drawer-component>
     </div>
     <div id="footer"></div>
