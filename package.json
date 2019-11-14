@@ -1,0 +1,30 @@
+{
+  "name": "lit-cms",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "es-dev-server --app-index index.html --preserve-symlinks --file-extensions .ts --node-resolve --babel --open --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/plugin-proposal-decorators": "^7.7.0",
+    "@babel/preset-typescript": "^7.7.2",
+    "es-dev-server": "^1.23.1"
+  },
+  "dependencies": {
+    "@anoblet/button-component": "^1.0.2",
+    "@anoblet/card-component": "^1.0.3",
+    "@anoblet/drawer-component": "^1.0.4",
+    "@anoblet/firebase": "0.0.1",
+    "@anoblet/lit-form": "0.0.1",
+    "@anoblet/material-icons": "0.0.1",
+    "@anoblet/mixins": "0.0.3",
+    "@anoblet/quill-js": "0.0.1",
+    "lit-element": "^2.2.1",
+    "page": "^1.11.5"
+  }
+}
