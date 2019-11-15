@@ -55,4 +55,8 @@ export default css`
   summary::-webkit-details-marker {
     display:none;
   }
+
+  #outlet {
+    padding: 1rem;
+  }
 `;

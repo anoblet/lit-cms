@@ -4,6 +4,7 @@ import { Form, Text, Textarea } from "@anoblet/lit-form";
 import { LitElement, css, customElement, html, property } from "lit-element";
 
 import Firebase from "../Firebase";
+import page from "page";
 
 @customElement("page-create")
 export class PageCreate extends LitElement {
@@ -25,7 +26,11 @@ export class PageCreate extends LitElement {
             render: function() {
               return html`
                 <label>${this.label}</label
-                ><quill-js name=${this.name} disable-shadow></quill-js>
+                ><quill-js
+                  disable-shadow
+                  format="delta"
+                  name=${this.name}
+                ></quill-js>
               `;
             }
           })
@@ -39,9 +44,14 @@ export class PageCreate extends LitElement {
             data[key] = value;
           });
           const result = await Firebase.addDocument("/pages", data);
-          if (result) console.log("success");
+          // result
+          //   ? page(`/page/read/${result}`)
+          //   : (this.status = "Error adding document");
         }
       }).render()}
+      ${this.status}
     `;
   }
+
+  @property() status;
 }
