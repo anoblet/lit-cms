@@ -16,9 +16,7 @@ class PageReadComponent extends BeforeRenderMixin(LitElement) {
   async beforeRender() {
     const page = await getPage(this.slug);
     Firebase.getDocument(`pages/${page.id}`, {
-      callback: document => {
-        this.data = document;
-      }
+      callback: document => (this.data = document)
     });
   }
 

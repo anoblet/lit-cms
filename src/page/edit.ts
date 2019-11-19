@@ -61,7 +61,7 @@ class PageEdit extends BeforeRenderMixin(LitElement) {
           formData.map(([key, value]) => {
             data[key] = value;
           });
-          const result = await Firebase.updateDocument(
+          const result: any = await Firebase.updateDocument(
             `/pages/${this.id}`,
             data
           );
