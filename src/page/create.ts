@@ -1,13 +1,32 @@
 import "@anoblet/quill-js";
 
 import { Form, Text, Textarea } from "@anoblet/lit-form";
-import { LitElement, css, customElement, html, property } from "lit-element";
+import {
+  LitElement,
+  css,
+  customElement,
+  html,
+  property,
+  query
+} from "lit-element";
 
 import Firebase from "../Firebase";
 import page from "page";
+import { stringToSlug } from "@anoblet/string-to-slug";
 
 @customElement("page-create")
 export class PageCreate extends LitElement {
+  @query("[name='slug']") slug;
+  @query("[name='title']") title;
+
+  firstUpdated() {
+    this.title.addEventListener("input", this.titleToSlug.bind(this));
+  }
+
+  protected titleToSlug(e) {
+    this.slug.value = stringToSlug(e.target.value);
+  }
+
   static styles = css`
     form {
       display: grid;
@@ -19,7 +38,8 @@ export class PageCreate extends LitElement {
     return html`
       ${new Form({
         fields: [
-          new Text({ name: "title", label: "Title" }),
+          new Text({ name: "title", label: "Title", value: "" }),
+          new Text({ name: "slug", label: "Slug", value: "", readonly: true }),
           new Textarea({
             name: "body",
             label: "Body",
@@ -43,6 +63,7 @@ export class PageCreate extends LitElement {
           formData.map(([key, value]) => {
             data[key] = value;
           });
+          console.log(data);
           const result = await Firebase.addDocument("/pages", data);
           // result
           //   ? page(`/page/read/${result}`)

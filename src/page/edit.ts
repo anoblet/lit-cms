@@ -1,13 +1,35 @@
 import "@anoblet/quill-js";
 
 import { Form, Text, Textarea } from "@anoblet/lit-form";
-import { LitElement, css, customElement, html, property } from "lit-element";
+import {
+  LitElement,
+  css,
+  customElement,
+  html,
+  property,
+  query
+} from "lit-element";
 
 import { BeforeRenderMixin } from "@anoblet/mixins";
 import Firebase from "../Firebase";
 
 @customElement("page-edit")
 class PageEdit extends BeforeRenderMixin(LitElement) {
+  @property({ type: String }) data;
+
+  @query("quill-js") editor;
+
+  async beforeRender() {
+    this.data = await Firebase.getDocument(`pages/${this.id}`);
+  }
+
+  firstUpdated() {
+    const quillElement: any = this.editor;
+    quillElement.updateComplete.then(() => {
+      quillElement.quill.root.innerHTML = this.data.body;
+    });
+  }
+
   static styles = css`
     form {
       display: grid;
@@ -47,18 +69,5 @@ class PageEdit extends BeforeRenderMixin(LitElement) {
         }
       }).render()}
     `;
-  }
-
-  @property({ type: String }) data;
-
-  async beforeRender() {
-    this.data = await Firebase.getDocument(`pages/${this.id}`);
-  }
-
-  firstUpdated() {
-    const quillElement: any = this.shadowRoot.querySelector("quill-js");
-    quillElement.updateComplete.then(() => {
-      quillElement.quill.root.innerHTML = this.data.body;
-    });
   }
 }

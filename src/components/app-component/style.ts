@@ -28,6 +28,7 @@ export default css`
 
   #center {
     display: flex;
+    flex-direction: column;
     flex: 1;
   }
 
