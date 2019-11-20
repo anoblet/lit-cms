@@ -11,6 +11,7 @@ export const getPage = async (page: string) => {
   return result[0];
 };
 
+
 export const getPageSync = async (page: string, callback) => {
   const result = await Firebase.getCollection("pages", {
     where: {

@@ -3,10 +3,8 @@ import "./page/list";
 import "./page/read";
 import "./page/edit";
 
-import { TemplateResult, html, render } from "lit-html";
-
 import page from "page";
-
+import { getCollection } from "@anoblet/firebase";
 // Make async so we can control the timing
 (async () => {
   await import("./components/app-component/component");
@@ -52,11 +50,11 @@ import page from "page";
     page("/page/list", context =>
       changeRoute(context.path, createComponent("page-list"))
     );
-    page("/page/read/:slug", context => {
+    page("/page/read/:id", context => {
       changeRoute(
         context.path,
         createComponent("page-read", {
-          slug: context.params.slug
+          id: context.params.id
         })
       );
     });
@@ -68,6 +66,14 @@ import page from "page";
         })
       )
     );
+    page("/:slug", context => {
+      changeRoute(
+        context.path,
+        createComponent("page-read", {
+          slug: context.params.slug
+        })
+      );
+    });
     page();
   };
 

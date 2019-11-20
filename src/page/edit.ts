@@ -12,6 +12,7 @@ import {
 
 import { BeforeRenderMixin } from "@anoblet/mixins";
 import Firebase from "../Firebase";
+import { updateDocument } from "@anoblet/firebase";
 
 @customElement("page-edit")
 class PageEdit extends BeforeRenderMixin(LitElement) {
@@ -61,10 +62,7 @@ class PageEdit extends BeforeRenderMixin(LitElement) {
           formData.map(([key, value]) => {
             data[key] = value;
           });
-          const result: any = await Firebase.updateDocument(
-            `/pages/${this.id}`,
-            data
-          );
+          const result: any = await updateDocument(`/pages/${this.id}`, data);
           if (result) console.log("success");
         }
       }).render()}

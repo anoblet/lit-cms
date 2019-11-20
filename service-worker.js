@@ -35,11 +35,11 @@ self.__precacheManifest = [
   },
   {
     "url": "components/app-component/template.ts",
-    "revision": "55623cd7bcd38fb5bacdd740de395174"
+    "revision": "c498d007a8914b57ac18d5328289ac95"
   },
   {
     "url": "firebase.ts",
-    "revision": "65ab97e46546d4e88dc6dec4bb2c1849"
+    "revision": "10eec74de6bd496dd1991be402076f5b"
   },
   {
     "url": "global-style.ts",
@@ -59,7 +59,7 @@ self.__precacheManifest = [
   },
   {
     "url": "page/edit.ts",
-    "revision": "4025f2b6cbe1c6769f61c0bc1947878e"
+    "revision": "7aedc868aeec1e9ffd5788522de7611e"
   },
   {
     "url": "page/list.ts",
@@ -67,7 +67,7 @@ self.__precacheManifest = [
   },
   {
     "url": "page/read.ts",
-    "revision": "8816ffe08f281a6e69aaebe7d65680a2"
+    "revision": "32bae7ca1baa9c633e14f3bcd1379fbd"
   },
   {
     "url": "pages.ts",
@@ -99,7 +99,7 @@ self.__precacheManifest = [
   },
   {
     "url": "templates/header.ts",
-    "revision": "a6f06bd3c4413ca5e0e7a6c864726233"
+    "revision": "50634bca4389314e9a8e1c878661769a"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});

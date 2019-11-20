@@ -5,19 +5,25 @@ import { LitElement, css, customElement, html, property } from "lit-element";
 import { BeforeRenderMixin } from "@anoblet/mixins";
 import { getPage } from "../pages";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
-import Firebase from "../firebase";
-// import { QuillDeltaToHtmlConverter } from "quill-delta-to-html/dist/esm/QuillDeltaToHtmlConverter";
+import { getDocument } from "@anoblet/firebase";
 
 @customElement("page-read")
 class PageReadComponent extends BeforeRenderMixin(LitElement) {
+  @property({ type: String }) id: string;
   @property({ type: String }) slug: string;
   @property({ type: String }) data;
 
   async beforeRender() {
-    const page = await getPage(this.slug);
-    Firebase.getDocument(`pages/${page.id}`, {
-      callback: document => (this.data = document)
-    });
+    if (this.id)
+      getDocument(`pages/${this.id}`, {
+        callback: document => (this.data = document)
+      });
+    else {
+      const page = await getPage(this.slug);
+      getDocument(`pages/${page.id}`, {
+        callback: document => (this.data = document)
+      });
+    }
   }
 
   static styles = css`

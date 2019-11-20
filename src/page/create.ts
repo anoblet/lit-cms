@@ -10,7 +10,7 @@ import {
   query
 } from "lit-element";
 
-import Firebase from "../Firebase";
+import { addDocument } from "@anoblet/firebase";
 import page from "page";
 import { stringToSlug } from "@anoblet/string-to-slug";
 
@@ -63,8 +63,7 @@ export class PageCreate extends LitElement {
           formData.map(([key, value]) => {
             data[key] = value;
           });
-          console.log(data);
-          const result = await Firebase.addDocument("/pages", data);
+          const result = await addDocument("/pages", data);
           // result
           //   ? page(`/page/read/${result}`)
           //   : (this.status = "Error adding document");

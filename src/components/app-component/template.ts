@@ -12,7 +12,10 @@ export default function() {
   return html`
     <div id="header">
       <div id="menu">
-        <button-component id="button" @click=${this._handleDrawerToggle}
+        <button-component
+          id="button"
+          aria-label="menu"
+          @click=${this._handleDrawerToggle}
           >${menu}</button-component
         >
       </div>
@@ -22,7 +25,7 @@ export default function() {
       <mwc-linear-progress></mwc-linear-progress>
       <drawer-component
         ><div slot="aside">
-          ${drawer()}
+          ${drawer.bind(this)()}
         </div>
         <div slot="main">
           <div id="outlet">${cache(this.outlet)}</div>
