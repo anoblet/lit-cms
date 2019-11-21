@@ -1,17 +1,27 @@
 import "@anoblet/quill-js";
 
 import { LitElement, css, customElement, html, property } from "lit-element";
+import { getCollection, getDocument } from "@anoblet/firebase";
 
 import { BeforeRenderMixin } from "@anoblet/mixins";
-import { getPage } from "../pages";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
-import { getDocument } from "@anoblet/firebase";
+
+const getPageBySlug = async (slug: string) => {
+  const result = await getCollection("pages", {
+    where: {
+      property: "slug",
+      operator: "==",
+      value: slug
+    }
+  });
+  return result[0];
+};
 
 @customElement("page-read")
 class PageReadComponent extends BeforeRenderMixin(LitElement) {
   @property({ type: String }) id: string;
   @property({ type: String }) slug: string;
-  @property({ type: String }) data;
+  @property({ type: String }) data: any;
 
   async beforeRender() {
     if (this.id)
@@ -19,7 +29,7 @@ class PageReadComponent extends BeforeRenderMixin(LitElement) {
         callback: document => (this.data = document)
       });
     else {
-      const page = await getPage(this.slug);
+      const page = await getPageBySlug(this.slug);
       getDocument(`pages/${page.id}`, {
         callback: document => (this.data = document)
       });

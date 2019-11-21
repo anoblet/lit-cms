@@ -8,6 +8,7 @@
     "save": "git add . && git commit -m \"Chore: Save\"",
     "start": "es-dev-server --app-index index.html --preserve-symlinks --file-extensions .ts --node-resolve --babel --open --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "rimraf dist && rollup -c rollup.config.js --watch",
     "workbox": "workbox generateSW"
   },
   "author": "",
@@ -18,6 +19,7 @@
     "@babel/preset-typescript": "^7.7.2",
     "es-dev-server": "^1.23.1",
     "rollup": "^1.27.2",
+    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-copy": "^3.1.0",
     "rollup-plugin-index-html": "^1.5.9",
     "rollup-plugin-modulepreload": "^1.2.2",
@@ -26,17 +28,19 @@
     "rollup-plugin-typescript2": "^0.25.2"
   },
   "dependencies": {
-    "@anoblet/button-component": "^1.0.3",
+    "@anoblet/button-component": "0.0.2",
     "@anoblet/card-component": "^1.0.3",
     "@anoblet/drawer-component": "^1.0.4",
-    "@anoblet/firebase": "0.0.3",
-    "@anoblet/lit-form": "0.0.1",
+    "@anoblet/firebase": "0.0.4",
+    "@anoblet/lit-form": "0.0.3",
+    "@anoblet/match-media": "0.0.1",
     "@anoblet/material-icons": "0.0.1",
     "@anoblet/mixins": "0.0.3",
-    "@anoblet/quill-js": "0.0.1",
+    "@anoblet/quill-js": "0.0.3",
     "@anoblet/string-to-slug": "0.0.1",
     "@material/mwc-linear-progress": "^0.10.0",
     "lit-element": "^2.2.1",
-    "page": "^1.11.5"
+    "page": "^1.11.5",
+    "rollup-plugin-typescript": "^1.0.1"
   }
 }

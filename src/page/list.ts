@@ -8,12 +8,11 @@ class PageListComponent extends BeforeRenderMixin(LitElement) {
   @property() data;
 
   async beforeRender() {
-    this.data = await getCollection(
-      "/pages" /*, {
-      callback: collection => (this.data = collection)
-    }*/
-    );
-    console.log(this.data);
+    const data = await getCollection("pages", {
+      callback: collection => (this.data = collection),
+      orderBy: "sortOrder"
+    });
+    console.log(data);
   }
 
   deleteDocument(id) {

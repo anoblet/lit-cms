@@ -21,6 +21,10 @@ export default css`
     flex: 1;
   }
 
+  drawer-component::part(aside) {
+    background: #fff;
+  }
+
   drawer-component[opened]::part(aside) {
     border-right: 1px solid #000;
     /* padding-right: 1rem; */

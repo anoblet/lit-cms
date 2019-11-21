@@ -32,6 +32,19 @@ export class PageCreate extends LitElement {
       display: grid;
       grid-gap: 1rem;
     }
+
+    quill-js {
+      display: block;
+      position: relative;
+    }
+
+    .textarea label {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+    }
   `;
 
   render() {
@@ -40,17 +53,20 @@ export class PageCreate extends LitElement {
         fields: [
           new Text({ name: "title", label: "Title", value: "" }),
           new Text({ name: "slug", label: "Slug", value: "", readonly: true }),
+          new Text({ name: "sortOrder", label: "Sort order", value: "0" }),
           new Textarea({
             name: "body",
             label: "Body",
             render: function() {
               return html`
-                <label>${this.label}</label
-                ><quill-js
-                  disable-shadow
-                  format="delta"
-                  name=${this.name}
-                ></quill-js>
+                <div class="textarea">
+                  <label>${this.label}</label
+                  ><quill-js
+                    disable-shadow
+                    format="delta"
+                    name=${this.name}
+                  ></quill-js>
+                </div>
               `;
             }
           })

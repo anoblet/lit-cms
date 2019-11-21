@@ -23,12 +23,12 @@ export default function() {
     </div>
     <div id="center">
       <mwc-linear-progress></mwc-linear-progress>
-      <drawer-component
+      <drawer-component id="drawer" ?absolute=${this.mobile}
         ><div slot="aside">
           ${drawer.bind(this)()}
         </div>
         <div slot="main">
-          <div id="outlet">${cache(this.outlet)}</div>
+          <div id="outlet">${this.outlet}</div>
         </div></drawer-component
       >
     </div>

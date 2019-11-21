@@ -2,13 +2,10 @@
   "presets": ["@babel/preset-typescript"],
   // for libraries that support babel decorators (lit-element) use:
   "plugins": [
-    // "@babel/plugin-transform-modules-commonjs",
     ["@babel/plugin-proposal-decorators", { "decoratorsBeforeExport": true }],
     "@babel/plugin-proposal-class-properties"
   ]
   // "plugins": [
-  // ["@babel/plugin-transform-runtime"],
-  // ["@babel/plugin-transform-modules-commonjs", { "loose": true }],
   // ["@babel/plugin-proposal-decorators", { "legacy": true }],
   // ["@babel/plugin-proposal-class-properties", { "loose": true }]
   // ]

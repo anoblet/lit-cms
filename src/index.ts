@@ -3,16 +3,18 @@ import "./page/list";
 import "./page/read";
 import "./page/edit";
 
+import { AppComponent } from "./components/app-component/component";
+import config from "../etc/config";
+import { initialize } from "@anoblet/firebase";
 import page from "page";
-import { getCollection } from "@anoblet/firebase";
+
 // Make async so we can control the timing
 (async () => {
+  initialize(config.firebase);
   await import("./components/app-component/component");
 
-  const app: any = document.querySelector("app-component");
+  const app: AppComponent = document.querySelector("app-component");
   await app.updateComplete;
-
-  const outlet: HTMLElement = app.shadowRoot.querySelector("#outlet");
 
   const cache = {};
 
@@ -22,7 +24,7 @@ import { getCollection } from "@anoblet/firebase";
     return element;
   };
 
-  const changeRoute = async (path, component) => {
+  const changeRoute = async (path: string, component: any) => {
     if (!cache[path]) {
       app.progress.open();
       const oldFirstUpdated = component.firstUpdated;

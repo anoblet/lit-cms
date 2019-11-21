@@ -1,8 +1,8 @@
+import commonjs from "rollup-plugin-commonjs";
 import copy from "rollup-plugin-copy";
-import modulepreload from "rollup-plugin-modulepreload";
 import resolve from "rollup-plugin-node-resolve";
 import { terser } from "rollup-plugin-terser";
-import typescript from "rollup-plugin-typescript2";
+import typescript from "rollup-plugin-typescript";
 
 const path = require("path");
 const indexHTML = require("rollup-plugin-index-html");
@@ -21,14 +21,11 @@ module.exports = {
         { src: "manifest.json", dest: "dist" }
       ]
     }),
+    commonjs(),
     resolve({ dedupe: ["lit-element", "lit-html"] }),
-    typescript({ objectHashIgnoreUnknownHack: true }),
+    typescript(),
     indexHTML({ preserveSymlinks: true }),
     terser()
-    // modulepreload({
-    //   prefix: "modules",
-    //   index: "dist/index.html"
-    // })
   ],
   preserveSymlinks: true
 };
