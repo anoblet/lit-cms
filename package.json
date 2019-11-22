@@ -8,7 +8,7 @@
     "save": "git add . && git commit -m \"Chore: Save\"",
     "start": "es-dev-server --app-index index.html --preserve-symlinks --file-extensions .ts --node-resolve --babel --open --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "rimraf dist && rollup -c rollup.config.js --watch",
+    "watch": "rimraf dist && rollup -c rollup.config.dev.js --watch",
     "workbox": "workbox generateSW"
   },
   "author": "",
