@@ -25,16 +25,17 @@ import page from "page";
   };
 
   const changeRoute = async (path: string, component: any) => {
-    if (!cache[path]) {
+    const shouldCache = false;
+    if (!shouldCache || !cache[path]) {
       app.progress.open();
       const oldFirstUpdated = component.firstUpdated;
       component.firstUpdated = () => {
         oldFirstUpdated.bind(component)();
         app.progress.close();
       };
-      cache[path] = component;
     }
-    app.outlet = cache[path];
+    if (shouldCache && !cache[path]) cache[path] = component;
+    app.outlet = shouldCache ? cache[path] : component;
   };
 
   const _installRoutes = () => {

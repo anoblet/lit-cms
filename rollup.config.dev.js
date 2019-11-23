@@ -1,3 +1,4 @@
+import analyze from "rollup-plugin-analyzer";
 import commonjs from "rollup-plugin-commonjs";
 import copy from "rollup-plugin-copy";
 import resolve from "rollup-plugin-node-resolve";
@@ -24,7 +25,8 @@ module.exports = {
     commonjs(),
     resolve({ dedupe: ["lit-element", "lit-html"] }),
     typescript(),
-    indexHTML({ preserveSymlinks: true })
+    indexHTML({ preserveSymlinks: true }),
+    analyze()
   ],
   preserveSymlinks: true
 };

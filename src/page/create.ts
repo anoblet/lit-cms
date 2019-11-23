@@ -16,11 +16,11 @@ import { stringToSlug } from "@anoblet/string-to-slug";
 
 @customElement("page-create")
 export class PageCreate extends LitElement {
-  @query("[name='slug']") slug;
-  @query("[name='title']") title;
+  @query("[name='slug']") slug: HTMLInputElement;
+  @query("[name='title']") pageTitle: HTMLInputElement;
 
   firstUpdated() {
-    this.title.addEventListener("input", this.titleToSlug.bind(this));
+    this.pageTitle.addEventListener("input", this.titleToSlug.bind(this));
   }
 
   protected titleToSlug(e) {
@@ -80,9 +80,10 @@ export class PageCreate extends LitElement {
             data[key] = value;
           });
           const result = await addDocument("/pages", data);
-          // result
-          //   ? page(`/page/read/${result}`)
-          //   : (this.status = "Error adding document");
+          console.log(result);
+          result
+            ? page(`/page/read/${result}`)
+            : (this.status = "Error adding document");
         }
       }).render()}
       ${this.status}

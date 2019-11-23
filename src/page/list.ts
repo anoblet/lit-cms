@@ -19,7 +19,9 @@ class PageListComponent extends BeforeRenderMixin(LitElement) {
   }
 
   delete(event: any) {
-    deleteDocument(`pages/${event.composedPath()[0].dataset.id}`);
+    event.preventDefault();
+    const result = confirm("Are you sure?");
+    if (result) deleteDocument(`pages/${event.composedPath()[0].dataset.id}`);
   }
 
   static styles = css`
@@ -40,22 +42,10 @@ class PageListComponent extends BeforeRenderMixin(LitElement) {
       grid-gap: 1rem;
     }
 
-    .row span {
-    }
-
     button-component {
       border: 1px solid #000;
       padding: 0.5rem;
       width: max-content;
-    }
-
-    #actions {
-
-    }
-
-    hr {
-      color: #000;
-      width: 100%;
     }
   `;
 
