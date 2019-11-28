@@ -1,20 +1,8 @@
 import { css } from "lit-element";
 
 export default css`
-  #header {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border-bottom: 1px solid #000;
-  }
-
-  #header > * {
+  button-component::part(button) {
     display: flex;
-    align-items: center;
-  }
-
-  #title {
-    text-align: center;
-    justify-content: center;
   }
 
   drawer-component {
@@ -23,17 +11,15 @@ export default css`
 
   drawer-component::part(aside) {
     background: #fff;
+    display: flex;
   }
 
   drawer-component[opened]::part(aside) {
     border-right: 1px solid #000;
-    /* padding-right: 1rem; */
   }
 
-  #center {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+  drawer-component #bottom {
+    border-top: 1px solid #000;
   }
 
   ul {
@@ -42,9 +28,32 @@ export default css`
     padding-inline-start: 0;
   }
 
+  [slot="aside"] {
+    display: flex;
+    flex: 1;
+  }
+
+  #button {
+    padding: 1rem;
+  }
+
+  #button:hover {
+    background: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+
+  #center {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
   #drawer {
     /* padding: 1rem; */
     min-width: 256px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
   }
 
   #drawer ul {
@@ -65,13 +74,24 @@ export default css`
     background: rgba(0, 0, 0, 0.25);
   }
 
-  #button {
-    padding: 1rem;
+  #drawer .flex {
+    flex: 1;
   }
 
-  #button:hover {
-    background: rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+  #header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 1px solid #000;
+  }
+
+  #header > * {
+    display: flex;
+    align-items: center;
+  }
+
+  #title {
+    text-align: center;
+    justify-content: center;
   }
 
   .grid {

@@ -5,18 +5,16 @@ import { LinearProgress } from "@material/mwc-linear-progress";
 import { getCollection } from "@anoblet/firebase";
 import globalStyle from "../../styles/global";
 import { observe } from "@anoblet/match-media";
-import style from "./style";
+import style from "./style.css";
 import template from "./template";
-
-const getPages = async () => {};
 
 @customElement("app-component")
 export class AppComponent extends LitElement {
-  @property() mobile: boolean;
+  @property({ type: Boolean }) mobile: boolean;
   @property() outlet;
   @property() pages;
 
-  @query("#drawer") drawer: DrawerComponent;
+  @query("#drawer-component") drawer: DrawerComponent;
   @query("mwc-linear-progress") progress: LinearProgress;
 
   public static styles = [globalStyle, style];

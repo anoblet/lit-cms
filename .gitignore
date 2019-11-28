@@ -1,4 +1,5 @@
 .firebase
+.firebaserc
 dist
 etc
 node_modules

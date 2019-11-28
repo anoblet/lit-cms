@@ -18,15 +18,18 @@ import page from "page";
 
   const cache = {};
 
-  const createComponent = (tag, properties = {}) => {
-    const element = document.createElement(tag);
+  const createComponent = (tagName: string, properties = {}) => {
+    const element = document.createElement(tagName);
     Object.keys(properties).map(key => (element[key] = properties[key]));
     return element;
   };
 
-  const changeRoute = async (path: string, component: any) => {
-    const shouldCache = false;
-    if (!shouldCache || !cache[path]) {
+  const changeRoute = async (
+    path: string,
+    component: any,
+    options: { shouldCache: boolean } = { shouldCache: true }
+  ) => {
+    if (!options.shouldCache || !cache[path]) {
       app.progress.open();
       const oldFirstUpdated = component.firstUpdated;
       component.firstUpdated = () => {
@@ -34,8 +37,8 @@ import page from "page";
         app.progress.close();
       };
     }
-    if (shouldCache && !cache[path]) cache[path] = component;
-    app.outlet = shouldCache ? cache[path] : component;
+    if (options.shouldCache && !cache[path]) cache[path] = component;
+    app.outlet = options.shouldCache ? cache[path] : component;
   };
 
   const _installRoutes = () => {
@@ -48,7 +51,9 @@ import page from "page";
       )
     );
     page("/page/create", context =>
-      changeRoute(context.path, createComponent("page-create"))
+      changeRoute(context.path, createComponent("page-create"), {
+        shouldCache: false
+      })
     );
     page("/page/list", context =>
       changeRoute(context.path, createComponent("page-list"))
@@ -61,14 +66,21 @@ import page from "page";
         })
       );
     });
-    page("/page/edit/:id", context =>
+    page("/page/edit/:id", context => {
       changeRoute(
         context.path,
         createComponent("page-edit", {
           id: context.params.id
-        })
-      )
-    );
+        }),
+        { shouldCache: false }
+      );
+    });
+    page("/settings", async context => {
+      await import("./settings/settings-component");
+      changeRoute(context.path, createComponent("settings-component"), {
+        shouldCache: true
+      });
+    });
     page("/:slug", context => {
       changeRoute(
         context.path,
