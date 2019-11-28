@@ -64,10 +64,6 @@ class PageReadComponent extends BeforeRenderMixin(
   `;
 
   render() {
-    console.log(typeof(`test`));
-    console.log(typeof("test"));
-
-    // const converter = new QuillDeltaToHtmlConverter(this.data.body, {});
     return html`
       ${this.settings.showPageTitle
         ? html`
