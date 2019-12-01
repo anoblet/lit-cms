@@ -11,6 +11,6 @@ script:
   - npm config set '//npm.pkg.github.com/:_authToken' "${GITHUB_TOKEN}"
   - npm i
   - npm run build
-  - lhci autorun --upload.target=temporary-public-storage
+  - lhci autorun
 after_success:
   - firebase deploy --token $FIREBASE_TOKEN

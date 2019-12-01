@@ -1,7 +1,4 @@
-import "./page/create";
-import "./page/list";
 import "./page/read";
-import "./page/edit";
 
 import { AppComponent } from "./components/app-component/component";
 import config from "../etc/config";
@@ -50,14 +47,16 @@ import page from "page";
         })
       )
     );
-    page("/page/create", context =>
+    page("/page/create", async context => {
+      await import("./page/create");
       changeRoute(context.path, createComponent("page-create"), {
         shouldCache: false
-      })
-    );
-    page("/page/list", context =>
-      changeRoute(context.path, createComponent("page-list"))
-    );
+      });
+    });
+    page("/page/list", async context => {
+      await import("./page/list");
+      changeRoute(context.path, createComponent("page-list"));
+    });
     page("/page/read/:id", context => {
       changeRoute(
         context.path,
@@ -66,7 +65,8 @@ import page from "page";
         })
       );
     });
-    page("/page/edit/:id", context => {
+    page("/page/edit/:id", async context => {
+      await import("./page/edit");
       changeRoute(
         context.path,
         createComponent("page-edit", {
