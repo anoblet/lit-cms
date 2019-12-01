@@ -1,1 +1,0 @@
-// Firebase collection itterator

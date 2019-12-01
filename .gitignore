@@ -1,2 +1,4 @@
-etc
+.firebase
+.firebaserc
 node_modules
+public/js

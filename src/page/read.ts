@@ -1,27 +1,77 @@
 import "@anoblet/quill-js";
 
 import { LitElement, css, customElement, html, property } from "lit-element";
+import { getCollection, getDocument } from "@anoblet/firebase";
 
 import { BeforeRenderMixin } from "@anoblet/mixins";
-import Firebase from "../Firebase";
-// import { QuillDeltaToHtmlConverter } from "quill-delta-to-html/dist/esm/QuillDeltaToHtmlConverter";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
+import { MobxReactionUpdate } from "@adobe/lit-mobx";
+import { settings } from "../settings/settings";
+
+const getPageBySlug = async (slug: string) => {
+  const result = await getCollection("pages", {
+    where: {
+      property: "slug",
+      operator: "==",
+      value: slug
+    }
+  });
+  return result[0];
+};
 
 @customElement("page-read")
-class PageRead extends BeforeRenderMixin(LitElement) {
+class PageReadComponent extends BeforeRenderMixin(
+  MobxReactionUpdate(LitElement)
+) {
   @property({ type: String }) id: string;
-  @property({ type: String }) data;
+  @property({ type: String }) slug: string;
+  @property({ type: String }) data: any;
+
+  public settings = settings;
 
   async beforeRender() {
-    this.data = await Firebase.getDocument(`pages/${this.id}`);
+    await new Promise(async resolve => {
+      const id = this.slug
+        ? await getPageBySlug(this.slug).then(page => page.id)
+        : this.id;
+      getDocument(`pages/${id}`, {
+        callback: document => {
+          this.data = document;
+          resolve();
+        }
+      });
+    });
   }
 
-  static styles = css``;
+  static styles = css`
+    :host {
+      display: block;
+      position: relative;
+    }
+
+    #actions {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  `;
 
   render() {
-    // const converter = new QuillDeltaToHtmlConverter(this.data.body, {});
     return html`
-      ${this.data.title} ${unsafeHTML(this.data.body)}
+      ${this.settings.showPageTitle
+        ? html`
+            ${this.data.title}
+          `
+        : ""}
+
+      <div id="actions">
+        ${this.settings.showEditLink
+          ? html`
+              <a href="/page/edit/${this.data.id}">Edit</a>
+            `
+          : ""}
+      </div>
+      ${unsafeHTML(this.data.body)}
     `;
   }
 }

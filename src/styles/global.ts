@@ -53,6 +53,14 @@ export default css`
   }
 
   summary::-webkit-details-marker {
-    display:none;
+    /* display:none; */
+  }
+
+  #outlet {
+    padding: 1rem;
+  }
+
+  mwc-linear-progress {
+    --mdc-theme-primary: black;
   }
 `;
