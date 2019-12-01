@@ -1,11 +1,16 @@
 language: node_js
 node_js:
   - "12.0"
+addons:
+  chrome: stable
+before_install:
+  - npm install -g @lhci/cli@0.3.x
 install:
   - npm i -g firebase-tools workbox-cli
 script:
   - npm config set '//npm.pkg.github.com/:_authToken' "${GITHUB_TOKEN}"
   - npm i
   - npm run build
+  - lhci autorun --upload.target=temporary-public-storage
 after_success:
   - firebase deploy --token $FIREBASE_TOKEN
