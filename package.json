@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf dist && rollup -c rollup.config.js",
+    "build": "rimraf public && rollup -c rollup.config.js",
     "dev": "run-p watch start",
     "save": "git add . && git commit -m \"Chore: Save\"",
     "start": "es-dev-server --root-dir public --app-index public/index.html --preserve-symlinks --file-extensions .ts --node-resolve --babel --open --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "rimraf dist && rollup -c rollup.config.dev.js --watch",
+    "watch": "rimraf public && rollup -c rollup.config.dev.js --watch",
     "workbox": "workbox generateSW"
   },
   "author": "",
@@ -28,6 +28,7 @@
     "rollup-plugin-modulepreload": "^1.2.2",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-typescript": "^1.0.1",
     "stylelint": "^12.0.0",
     "stylelint-config-standard": "^19.0.0"
   },
@@ -47,7 +48,6 @@
     "lit-element": "^2.2.1",
     "mobx": "^5.13.0",
     "page": "^1.11.5",
-    "rollup-plugin-typescript": "^1.0.1",
     "typescript-plugin-css-modules": "^2.1.0"
   }
 }
