@@ -31,22 +31,15 @@ class PageReadComponent extends BeforeRenderMixin(
 
   async beforeRender() {
     await new Promise(async resolve => {
-      if (this.id)
-        getDocument(`pages/${this.id}`, {
-          callback: document => {
-            this.data = document;
-            resolve();
-          }
-        });
-      else {
-        const page = await getPageBySlug(this.slug);
-        getDocument(`pages/${page.id}`, {
-          callback: document => {
-            this.data = document;
-            resolve();
-          }
-        });
-      }
+      const id = this.slug
+        ? await getPageBySlug(this.slug).then(page => page.id)
+        : this.id;
+      getDocument(`pages/${id}`, {
+        callback: document => {
+          this.data = document;
+          resolve();
+        }
+      });
     });
   }
 
@@ -72,7 +65,11 @@ class PageReadComponent extends BeforeRenderMixin(
         : ""}
 
       <div id="actions">
-        <a href="/page/edit/${this.data.id}">Edit</a>
+        ${this.settings.showEditLink
+          ? html`
+              <a href="/page/edit/${this.data.id}">Edit</a>
+            `
+          : ""}
       </div>
       ${unsafeHTML(this.data.body)}
     `;
