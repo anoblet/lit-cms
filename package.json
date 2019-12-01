@@ -36,7 +36,7 @@
     "@adobe/lit-mobx": "0.0.2",
     "@anoblet/button-component": "0.0.2",
     "@anoblet/card-component": "^1.0.3",
-    "@anoblet/drawer-component": "^1.0.4",
+    "@anoblet/drawer-component": "^0.0.1",
     "@anoblet/firebase": "0.0.4",
     "@anoblet/lit-form": "0.0.3",
     "@anoblet/match-media": "0.0.1",
