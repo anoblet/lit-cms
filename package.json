@@ -48,6 +48,6 @@
     "lit-element": "^2.2.1",
     "mobx": "^5.13.0",
     "page": "^1.11.5",
-    "typescript-plugin-css-modules": "^2.1.0"
+    "typescript": "^3.7.2"
   }
 }
