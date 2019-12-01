@@ -3,7 +3,8 @@ node_js:
    - "12.0"
 script:
   - npm config set '//npm.pkg.github.com/:_authToken' "${GITHUB_TOKEN}"
-  - npm i && npm run build
+  - npm i
+  - npm run build
 install:
   - npm i -g firebase-tools
 after_success:
