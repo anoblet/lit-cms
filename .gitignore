@@ -1,4 +1,4 @@
 .firebase
 .firebaserc
 node_modules
-public
+public/js

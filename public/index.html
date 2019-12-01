@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://firestore.googleapis.com" />
+    <title>lit-cms</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="Description" content="lit-cms" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        height: 100%;
+      }
+      html,
+      body {
+        display: flex;
+      }
+      body {
+        flex: 1;
+        margin: 0;
+        font-family: "Roboto", sans-serif;
+      }
+      app-component {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+    </style>
+    <meta name="theme-color" content="#3367D6" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="assets/baseline_create_black_48.png" />
+    <base href="/dist" />
+  </head>
+  <body>
+    <app-component></app-component>
+    <script type="module" src="/js/index.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function() {
+          navigator.serviceWorker.register("/service-worker.js").then(
+            function(registration) {
+              console.log(
+                "ServiceWorker registration successful with scope: ",
+                registration.scope
+              );
+            },
+            function(err) {
+              console.log("ServiceWorker registration failed: ", err);
+            }
+          );
+        });
+      }
+    </script>
+    <noscript>
+      Javascript must be enabled
+    </noscript>
+  </body>
+</html>
