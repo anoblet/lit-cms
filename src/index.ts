@@ -22,8 +22,9 @@ import page from "page";
   const changeRoute = async (
     path: string,
     component: any,
-    options: { shouldCache: boolean } = { shouldCache: true }
+    options: { shouldCache?: boolean; src?: any } = { shouldCache: true }
   ) => {
+    if (options.src) await options.src();
     if (!options.shouldCache || !cache[path]) {
       app.progress.open();
       const oldFirstUpdated = component.firstUpdated;
@@ -38,56 +39,62 @@ import page from "page";
 
   const _installRoutes = () => {
     page("/", async () => {
-      await import("./page/read");
       changeRoute(
         "/page/read/home",
         createComponent("page-read", {
           slug: "home"
-        })
+        }),
+        {
+          src: () => import("./page/read")
+        }
       );
     });
     page("/page/create", async context => {
-      await import("./page/create");
       changeRoute(context.path, createComponent("page-create"), {
-        shouldCache: false
+        shouldCache: false,
+        src: () => import("./page/create")
       });
     });
     page("/page/list", async context => {
-      await import("./page/list");
-      changeRoute(context.path, createComponent("page-list"));
+      changeRoute(context.path, createComponent("page-list"), {
+        src: () => import("./page/list")
+      });
     });
     page("/page/read/:id", async context => {
-      await import("./page/read");
       changeRoute(
         context.path,
         createComponent("page-read", {
           id: context.params.id
-        })
+        }),
+        {
+          src: () => import("./page/read")
+        }
       );
     });
     page("/page/edit/:id", async context => {
-      await import("./page/edit");
       changeRoute(
         context.path,
         createComponent("page-edit", {
           id: context.params.id
         }),
-        { shouldCache: false }
+        { shouldCache: false, src: () => import("./page/edit") }
       );
     });
     page("/settings", async context => {
-      await import("./settings/settings-component");
       changeRoute(context.path, createComponent("settings-component"), {
-        shouldCache: true
+        shouldCache: true,
+        src: () => import("./settings/settings-component")
       });
     });
     page("/:slug", async context => {
-      await import("./page/read");
       changeRoute(
         context.path,
         createComponent("page-read", {
           slug: context.params.slug
-        })
+        }),
+        {
+          src: () => import("./page/read")
+        }
       );
     });
     page();
