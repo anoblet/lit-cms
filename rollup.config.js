@@ -1,6 +1,7 @@
 import commonjs from "rollup-plugin-commonjs";
 import replace from "rollup-plugin-replace";
 import resolve from "rollup-plugin-node-resolve";
+import size from 'rollup-plugin-size';
 import { terser } from "rollup-plugin-terser";
 import typescript from "rollup-plugin-typescript";
 
@@ -17,7 +18,8 @@ module.exports = {
     commonjs(),
     resolve({ dedupe: ["lit-element", "lit-html"] }),
     typescript(),
-    terser()
+    terser(),
+    size()
   ],
   preserveSymlinks: true
 };
