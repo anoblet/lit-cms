@@ -81,7 +81,8 @@ import page from "page";
         shouldCache: true
       });
     });
-    page("/:slug", context => {
+    page("/:slug", async context => {
+      await import("./page/read");
       changeRoute(
         context.path,
         createComponent("page-read", {

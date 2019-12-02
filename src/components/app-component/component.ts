@@ -2,7 +2,6 @@ import { LitElement, customElement, property, query } from "lit-element";
 
 import { DrawerComponent } from "@anoblet/drawer-component";
 import { LinearProgress } from "@material/mwc-linear-progress";
-// import { getCollection } from "@anoblet/firebase";
 import globalStyle from "../../styles/global";
 import { observe } from "@anoblet/match-media";
 import style from "./style.css";
