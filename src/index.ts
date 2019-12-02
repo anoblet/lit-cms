@@ -1,5 +1,3 @@
-import "./page/read";
-
 import { AppComponent } from "./components/app-component/component";
 import config from "../etc/config";
 import { initialize } from "@anoblet/firebase";
@@ -39,14 +37,15 @@ import page from "page";
   };
 
   const _installRoutes = () => {
-    page("/", () =>
+    page("/", async () => {
+      await import("./page/read");
       changeRoute(
         "/page/read/home",
         createComponent("page-read", {
           slug: "home"
         })
-      )
-    );
+      );
+    });
     page("/page/create", async context => {
       await import("./page/create");
       changeRoute(context.path, createComponent("page-create"), {
@@ -57,7 +56,8 @@ import page from "page";
       await import("./page/list");
       changeRoute(context.path, createComponent("page-list"));
     });
-    page("/page/read/:id", context => {
+    page("/page/read/:id", async context => {
+      await import("./page/read");
       changeRoute(
         context.path,
         createComponent("page-read", {
