@@ -1,12 +1,11 @@
 import { AppComponent } from "./components/app-component/component";
 import config from "../etc/config";
+import { initialize } from "@anoblet/firebase";
 import page from "page";
 
 // Make async so we can control the timing
 (async () => {
-  await import("@anoblet/firebase").then(async ({ initialize }) => {
-    initialize(config.firebase);
-  });
+  initialize(config.firebase);
   await import("./components/app-component/component");
 
   const app: AppComponent = document.querySelector("app-component");

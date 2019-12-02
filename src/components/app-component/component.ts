@@ -6,6 +6,7 @@ import globalStyle from "../../styles/global";
 import { observe } from "@anoblet/match-media";
 import style from "./style.css";
 import template from "./template";
+import { getCollection } from "@anoblet/firebase";
 
 @customElement("app-component")
 export class AppComponent extends LitElement {
@@ -25,11 +26,9 @@ export class AppComponent extends LitElement {
   }
 
   async getPages() {
-    import("@anoblet/firebase").then(async ({ getCollection }) => {
-      await getCollection("pages", {
-        callback: collection => (this.pages = collection),
-        orderBy: "sortOrder"
-      });
+    await getCollection("pages", {
+      callback: collection => (this.pages = collection),
+      orderBy: "sortOrder"
     });
   }
 

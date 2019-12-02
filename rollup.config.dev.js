@@ -2,8 +2,9 @@ import analyze from "rollup-plugin-analyzer";
 import commonjs from "rollup-plugin-commonjs";
 import replace from "rollup-plugin-replace";
 import resolve from "rollup-plugin-node-resolve";
-import size from 'rollup-plugin-size';
+import size from "rollup-plugin-size";
 import typescript from "rollup-plugin-typescript";
+import visualizer from "rollup-plugin-visualizer";
 
 module.exports = {
   input: "./src/index.ts",
@@ -18,6 +19,7 @@ module.exports = {
     commonjs(),
     resolve({ dedupe: ["lit-element", "lit-html"] }),
     typescript(),
+    visualizer({ open: true }),
     size()
   ],
   preserveSymlinks: true
