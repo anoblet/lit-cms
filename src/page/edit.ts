@@ -1,4 +1,4 @@
-import "@anoblet/quill-js";
+import("@anoblet/quill-js");
 
 import { Form, Text, Textarea } from "@anoblet/lit-form";
 import {

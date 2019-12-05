@@ -20,9 +20,9 @@ module.exports = {
     }),
     commonjs(),
     resolve({ dedupe: ["lit-element", "lit-html"] }),
+    typescript(),
     minifyHTML(),
     terser(),
-    typescript(),
     size()
   ],
   preserveSymlinks: true
