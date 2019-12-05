@@ -1,5 +1,3 @@
-import "@anoblet/quill-js";
-
 import { LitElement, css, customElement, html, property } from "lit-element";
 import { getCollection, getDocument } from "@anoblet/firebase";
 

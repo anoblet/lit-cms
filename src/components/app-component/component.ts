@@ -6,7 +6,8 @@ import globalStyle from "../../styles/global";
 import { observe } from "@anoblet/match-media";
 import style from "./style.css";
 import template from "./template";
-import { getCollection } from "@anoblet/firebase";
+import { initialize, enablePersistance, getCollection } from "@anoblet/firebase";
+import config from "../../../etc/config";
 
 @customElement("app-component")
 export class AppComponent extends LitElement {
@@ -21,12 +22,19 @@ export class AppComponent extends LitElement {
   public render = template.bind(this);
 
   firstUpdated() {
-    this.getPages();
+    this.getFirebaseData();
     observe("(max-width: 700px)", result => (this.mobile = result));
   }
 
+  async getFirebaseData() {
+    await initialize(config.firebase);
+    await enablePersistance();
+    await this.getPages();
+  }
+
   async getPages() {
-    await getCollection("pages", {
+    console.log("hi")
+    return getCollection("pages", {
       callback: collection => (this.pages = collection),
       orderBy: "sortOrder"
     });

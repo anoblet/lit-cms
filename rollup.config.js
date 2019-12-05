@@ -1,4 +1,6 @@
 import commonjs from "rollup-plugin-commonjs";
+import firebase from './node_modules/firebase/package.json';
+import minifyHTML from 'rollup-plugin-minify-html-literals';
 import replace from "rollup-plugin-replace";
 import resolve from "rollup-plugin-node-resolve";
 import size from "rollup-plugin-size";
@@ -13,12 +15,14 @@ module.exports = {
   },
   plugins: [
     replace({
-      "process.env.NODE_ENV": JSON.stringify("production")
+      "process.env.NODE_ENV": JSON.stringify("production"),
+      'FIREBASE_SDK_VERSION': firebase.version,
     }),
     commonjs(),
     resolve({ dedupe: ["lit-element", "lit-html"] }),
-    typescript(),
+    minifyHTML(),
     terser(),
+    typescript(),
     size()
   ],
   preserveSymlinks: true
