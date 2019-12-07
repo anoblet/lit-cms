@@ -11,7 +11,7 @@ import page from "page";
 (async () => {
   await initialize(config.firebase);
   application.toggleFirebaseInitialized();
-  
+
   const app: AppComponent = document.querySelector("app-component");
   await app.updateComplete;
 
@@ -29,10 +29,13 @@ import page from "page";
     options: { shouldCache?: boolean; src?: any } = { shouldCache: true }
   ) => {
     if (options.src) await options.src();
+    console.log(typeof component);
     if (typeof component == "function") component = component();
     if (!options.shouldCache || !cache[path]) {
       app.progress.open();
       const oldFirstUpdated = component.firstUpdated;
+      console.log(component.firstUpdated);
+      console.log(component.updateComplete);
       component.firstUpdated = () => {
         oldFirstUpdated.bind(component)();
         app.progress.close();
@@ -58,18 +61,18 @@ import page from "page";
             slug: "home"
           }),
         {
-          src: () => import("./page/read")
+          src: async () => import("./page/read")
         }
       );
     });
     page("/page/create", async context => {
-      changeRoute(context.path, createComponent("page-create"), {
+      changeRoute(context.path, () => createComponent("page-create"), {
         shouldCache: false,
-        src: () => import("./page/create")
+        src: async () => import("./page/create")
       });
     });
     page("/page/list", async context => {
-      changeRoute(context.path, createComponent("page-list"), {
+      changeRoute(context.path, () => createComponent("page-list"), {
         src: () => import("./page/list")
       });
     });

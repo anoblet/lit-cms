@@ -38,8 +38,8 @@ self.__precacheManifest = [
     "revision": "ac1781c34a7c0a33c787ee6a4f3586ac"
   },
   {
-    "url": "js/edit-9d8ee3e3.js",
-    "revision": "491bcd7474b3872a1feaeeab3e2e8137"
+    "url": "js/edit-5fa28eba.js",
+    "revision": "b40614cffc1cf825ca8b391a5643748e"
   },
   {
     "url": "js/index-53622c69.js",
@@ -63,7 +63,7 @@ self.__precacheManifest = [
   },
   {
     "url": "js/index.js",
-    "revision": "d5679ea4ac1bff76bfdf2c6bb68f76ba"
+    "revision": "513371d6b287df5769133cba55fa2d6f"
   },
   {
     "url": "js/list-1d3397bf.js",

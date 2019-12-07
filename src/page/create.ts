@@ -1,6 +1,4 @@
-import("@anoblet/quill-js");
-
-import { Form, Text, Textarea } from "@anoblet/lit-form";
+import { Button, Form, Text, Textarea } from "@anoblet/lit-form";
 import {
   LitElement,
   css,
@@ -10,14 +8,19 @@ import {
   query
 } from "lit-element";
 
+import { BeforeRenderMixin } from "@anoblet/mixins";
 import { addDocument } from "@anoblet/firebase";
 import page from "page";
 import { stringToSlug } from "@anoblet/string-to-slug";
 
 @customElement("page-create")
-export class PageCreate extends LitElement {
+class PageCreate extends BeforeRenderMixin(LitElement) {
   @query("[name='slug']") slug: HTMLInputElement;
   @query("[name='title']") pageTitle: HTMLInputElement;
+
+  async beforeRender() {
+    await import("@anoblet/quill-js");
+  }
 
   firstUpdated() {
     this.pageTitle.addEventListener("input", this.titleToSlug.bind(this));
@@ -47,6 +50,18 @@ export class PageCreate extends LitElement {
     }
   `;
 
+  async onSubmit() {
+    const formData = [...new FormData(this.shadowRoot.querySelector("form"))];
+    const data = {};
+    formData.map(([key, value]) => {
+      data[key] = value;
+    });
+    const result = await addDocument("/pages", data);
+    result
+      ? page(`/page/read/${result}`)
+      : (this.status = "Error adding document");
+  }
+
   render() {
     return html`
       ${new Form({
@@ -71,20 +86,21 @@ export class PageCreate extends LitElement {
             }
           })
         ],
-        onSubmit: async () => {
-          const formData = [
-            ...new FormData(this.shadowRoot.querySelector("form"))
-          ];
-          const data = {};
-          formData.map(([key, value]) => {
-            data[key] = value;
-          });
-          const result = await addDocument("/pages", data);
-          console.log(result);
-          result
-            ? page(`/page/read/${result}`)
-            : (this.status = "Error adding document");
-        }
+        actions: [
+          new Button({
+            text: "Submit",
+            toTemplateResult: function() {
+              return html`
+                <button-component
+                  @click=${function() {
+                    this.onSubmit();
+                  }}
+                  >${this.text}</button-component
+                >
+              `;
+            }
+          })
+        ]
       }).render()}
       ${this.status}
     `;

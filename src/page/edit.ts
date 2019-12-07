@@ -1,5 +1,3 @@
-import("@anoblet/quill-js");
-
 import { Form, Text, Textarea } from "@anoblet/lit-form";
 import {
   LitElement,
@@ -21,16 +19,16 @@ class PageEdit extends BeforeRenderMixin(LitElement) {
 
   @query("[name='slug']") slug;
   @query("[name='title']") title;
-  @query("quill-js") editor;
+  @query("quill-js") editor: any;
 
   async beforeRender() {
+    await import("@anoblet/quill-js");
     this.data = await getDocument(`pages/${this.id}`);
   }
 
-  firstUpdated() {
-    const quillElement: any = this.editor;
-    quillElement.updateComplete.then(() => {
-      quillElement.quill.root.innerHTML = this.data.body;
+  async firstUpdated() {
+    this.editor.updateComplete.then(() => {
+      this.editor.quill.root.innerHTML = this.data.body;
     });
     this.title.addEventListener("input", this.titleToSlug.bind(this));
   }
