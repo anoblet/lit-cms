@@ -6,7 +6,7 @@ import { Button, Form, Text, Textarea } from "@anoblet/lit-form";
 import { cache } from "lit-html/directives/cache";
 import { html } from "lit-element";
 
-import("../../page/view");
+import("../view/component");
 
 export default function() {
   const data = this.data;
@@ -47,7 +47,7 @@ export default function() {
                           <textarea
                             name=${this.name}
                             .value=${data.body}
-                            rows="10"
+                            rows="5"
                             @change=${function(e) {
                               this.data = {
                                 ...this.data,
@@ -78,7 +78,7 @@ export default function() {
               }).render()}
             `
           : html`
-              <page-view .page=${this.data}></page-view>
+              <markdown-view .page=${this.data}></markdown-view>
             `
       )}
     </div>

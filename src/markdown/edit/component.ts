@@ -2,7 +2,7 @@ import { LitElement, customElement, property, query } from "lit-element";
 
 import { BeforeRenderMixin } from "@anoblet/mixins";
 import MDCTabBarFoundation from "@material/tab-bar/foundation";
-import { addDocument } from "@anoblet/firebase";
+import { updateDocument } from "@anoblet/firebase";
 import globalStyle from "../../styles/global";
 import page from "page";
 import template from "./template";
@@ -51,11 +51,14 @@ class MarkdownEditComponent extends BeforeRenderMixin(LitElement) {
 
   async onSubmit() {
     const appComponent: any = document.querySelector("app-component");
-    const result = await addDocument("/pages", this.getFormData());
+    const result = await updateDocument(
+      `/pages/${this.data.id}`,
+      this.getFormData()
+    );
     appComponent.toast.content = result
-      ? "Document added successfully"
-      : "Error adding document";
+      ? "Document updated successfully"
+      : "Error updating document";
     appComponent.toast.show();
-    result ? page(`/page/read/${result}`) : false;
+    result ? page(`/page/read/${this.data.id}`) : false;
   }
 }

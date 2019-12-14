@@ -105,6 +105,7 @@ import { render } from "lit-html";
     });
     page("/page/edit/:id", async context => {
       const page = await getDocument(`pages/${context.params.id}`);
+      page.id = context.params.id;
       switch (settings.editor) {
         case "quill":
           changeRoute(
