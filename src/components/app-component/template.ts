@@ -1,6 +1,7 @@
 import "@anoblet/drawer-component";
 import "@anoblet/card-component";
 import "@anoblet/button-component";
+import "@anoblet/toast-component";
 import "@material/mwc-linear-progress";
 
 import drawer from "../../templates/drawer";
@@ -27,9 +28,9 @@ export default function() {
           ${drawer.bind(this)()}
         </div>
         <div slot="main">
-          <div id="outlet">${this.outlet}</div>
-        </div></drawer-component
-      >
+          <div id="outlet"></div></div
+      ></drawer-component>
+      <toast-component></toast-component>
     </div>
     <div id="footer"></div>
   `;

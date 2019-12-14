@@ -1,17 +1,27 @@
 import "./components/app-component/component";
-import "./page/read";
+import "./markdown/read";
+import "@anoblet/card-component";
+
+import { Settings, settings } from "./settings/settings";
 
 import { AppComponent } from "./components/app-component/component";
-import { application } from "./models/application";
 import config from "../etc/config";
+import { getCollection } from "@anoblet/firebase";
+import { getDocument } from "@anoblet/firebase";
 import { initialize } from "@anoblet/firebase";
 import page from "page";
+import { render } from "lit-html";
 
 // Make async so we can control the timing
 (async () => {
   await initialize(config.firebase);
-  application.toggleFirebaseInitialized();
-
+  await getDocument("settings/default", {
+    callback: (document: Settings) => {
+      settings.setEditor(document.editor);
+      settings.setShowEditLink(document.showEditLink);
+      settings.setShowPageTitle(document.showPageTitle);
+    }
+  });
   const app: AppComponent = document.querySelector("app-component");
   await app.updateComplete;
 
@@ -29,47 +39,52 @@ import page from "page";
     options: { shouldCache?: boolean; src?: any } = { shouldCache: true }
   ) => {
     if (options.src) await options.src();
-    console.log(typeof component);
-    if (typeof component == "function") component = component();
+    component = component();
     if (!options.shouldCache || !cache[path]) {
       app.progress.open();
       const oldFirstUpdated = component.firstUpdated;
-      console.log(component.firstUpdated);
-      console.log(component.updateComplete);
       component.firstUpdated = () => {
         oldFirstUpdated.bind(component)();
         app.progress.close();
       };
     }
     if (options.shouldCache && !cache[path]) cache[path] = component;
-    app.outlet = options.shouldCache ? cache[path] : component;
+    render(options.shouldCache ? cache[path] : component, app.outlet);
   };
 
-  const _changeRoute = ({
-    path: String,
-    component: Function,
-    properties: {},
-    options: { shouldCache, src }
-  }) => {};
+  const getPageBySlug = async (slug: string) => {
+    const result = await getCollection("pages", {
+      where: {
+        property: "slug",
+        operator: "==",
+        value: slug
+      }
+    });
+    return result[0];
+  };
 
   const _installRoutes = () => {
-    page("/", async () => {
-      changeRoute(
-        "/page/read/home",
-        () =>
-          createComponent("page-read", {
-            slug: "home"
-          }),
-        {
-          src: async () => import("./page/read")
-        }
-      );
+    page("/", async context => {
+      const id = await getPageBySlug("home").then(page => page.id);
+      changeRoute(context.path, () => createComponent("page-read", { id }), {
+        src: () => import("./markdown/read")
+      });
     });
     page("/page/create", async context => {
-      changeRoute(context.path, () => createComponent("page-create"), {
-        shouldCache: false,
-        src: async () => import("./page/create")
-      });
+      switch (settings.editor) {
+        case "quill":
+          changeRoute(context.path, () => createComponent("page-create"), {
+            shouldCache: false,
+            src: () => import("./page/create")
+          });
+          break;
+        case "markdown":
+          changeRoute(context.path, () => createComponent("markdown-create"), {
+            shouldCache: false,
+            src: () => import("./markdown/create/component")
+          });
+          break;
+      }
     });
     page("/page/list", async context => {
       changeRoute(context.path, () => createComponent("page-list"), {
@@ -84,19 +99,37 @@ import page from "page";
             id: context.params.id
           }),
         {
-          src: () => import("./page/read")
+          src: () => import("./markdown/read")
         }
       );
     });
     page("/page/edit/:id", async context => {
-      changeRoute(
-        context.path,
-        () =>
-          createComponent("page-edit", {
-            id: context.params.id
-          }),
-        { shouldCache: false, src: () => import("./page/edit") }
-      );
+      const page = await getDocument(`pages/${context.params.id}`);
+      switch (settings.editor) {
+        case "quill":
+          changeRoute(
+            context.path,
+            () =>
+              createComponent("page-edit", {
+                id: context.params.id
+              }),
+            { shouldCache: false, src: () => import("./page/edit") }
+          );
+          break;
+        case "markdown":
+          changeRoute(
+            context.path,
+            () =>
+              createComponent("markdown-edit", {
+                data: page
+              }),
+            {
+              shouldCache: false,
+              src: () => import("./markdown/edit/component")
+            }
+          );
+          break;
+      }
     });
     page("/settings", async context => {
       changeRoute(context.path, () => createComponent("settings-component"), {
@@ -105,16 +138,10 @@ import page from "page";
       });
     });
     page("/:slug", async context => {
-      changeRoute(
-        context.path,
-        () =>
-          createComponent("page-read", {
-            slug: context.params.slug
-          }),
-        {
-          src: () => import("./page/read")
-        }
-      );
+      const id = await getPageBySlug(context.params.slug).then(page => page.id);
+      changeRoute(context.path, () => createComponent("page-read", { id }), {
+        src: () => import("./markdown/read")
+      });
     });
     page();
   };

@@ -1,4 +1,4 @@
-import { Form, Text, Textarea } from "@anoblet/lit-form";
+import { Button, Form, Text, Textarea } from "@anoblet/lit-form";
 import {
   LitElement,
   css,
@@ -35,6 +35,16 @@ class PageEdit extends BeforeRenderMixin(LitElement) {
 
   protected titleToSlug(e) {
     this.slug.value = stringToSlug(e.target.value);
+  }
+
+  async onSubmit() {
+    const formData = [...new FormData(this.shadowRoot.querySelector("form"))];
+    const data = {};
+    formData.map(([key, value]) => {
+      data[key] = value;
+    });
+    const result: any = await updateDocument(`/pages/${this.id}`, data);
+    result ? page(`/${this.data.slug}`) : alert("Error");
   }
 
   static styles = css`
@@ -86,17 +96,21 @@ class PageEdit extends BeforeRenderMixin(LitElement) {
             }
           })
         ],
-        onSubmit: async () => {
-          const formData = [
-            ...new FormData(this.shadowRoot.querySelector("form"))
-          ];
-          const data = {};
-          formData.map(([key, value]) => {
-            data[key] = value;
-          });
-          const result: any = await updateDocument(`/pages/${this.id}`, data);
-          result ? page(`/${this.data.slug}`) : alert("Error");
-        }
+        actions: [
+          new Button({
+            text: "Submit",
+            toTemplateResult: function() {
+              return html`
+                <button-component
+                  @click=${function() {
+                    this.onSubmit();
+                  }}
+                  >${this.text}</button-component
+                >
+              `;
+            }
+          })
+        ]
       }).render()}
     `;
   }

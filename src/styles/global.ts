@@ -63,4 +63,11 @@ export default css`
   mwc-linear-progress {
     --mdc-theme-primary: black;
   }
+
+  toast-component[open] {
+    padding: 1em;
+    border-top: 1px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+  }
 `;

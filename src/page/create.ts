@@ -10,6 +10,7 @@ import {
 
 import { BeforeRenderMixin } from "@anoblet/mixins";
 import { addDocument } from "@anoblet/firebase";
+import globalStyle from "../styles/global";
 import page from "page";
 import { stringToSlug } from "@anoblet/string-to-slug";
 
@@ -30,26 +31,6 @@ class PageCreate extends BeforeRenderMixin(LitElement) {
     this.slug.value = stringToSlug(e.target.value);
   }
 
-  static styles = css`
-    form {
-      display: grid;
-      grid-gap: 1rem;
-    }
-
-    quill-js {
-      display: block;
-      position: relative;
-    }
-
-    .textarea label {
-      margin-bottom: 1rem;
-    }
-
-    label {
-      display: block;
-    }
-  `;
-
   async onSubmit() {
     const formData = [...new FormData(this.shadowRoot.querySelector("form"))];
     const data = {};
@@ -57,10 +38,43 @@ class PageCreate extends BeforeRenderMixin(LitElement) {
       data[key] = value;
     });
     const result = await addDocument("/pages", data);
-    result
-      ? page(`/page/read/${result}`)
-      : (this.status = "Error adding document");
+    const appComponent: any = document.querySelector("app-component");
+    if (result) {
+      appComponent.toast.content = "Document added successfully";
+      appComponent.toast.show();
+      page(`/page/read/${result}`);
+    } else {
+      appComponent.toast.content = "Error adding document";
+      appComponent.toast.show();
+    }
   }
+
+  static styles = [
+    globalStyle,
+    css`
+      form {
+        display: grid;
+        grid-gap: 1rem;
+      }
+
+      quill-js {
+        display: block;
+        position: relative;
+      }
+
+      .textarea label {
+        margin-bottom: 1rem;
+      }
+
+      label {
+        display: block;
+      }
+
+      button {
+        margin: inherit;
+      }
+    `
+  ];
 
   render() {
     return html`
@@ -102,7 +116,6 @@ class PageCreate extends BeforeRenderMixin(LitElement) {
           })
         ]
       }).render()}
-      ${this.status}
     `;
   }
 

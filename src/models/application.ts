@@ -2,7 +2,7 @@ import { observable, action } from "mobx";
 
 class Application {
   @observable
-  public firebaseInitialized = false;
+  public editor = "quill"
   @observable
   public firestoreInitialized = false;
   @action
