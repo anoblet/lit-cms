@@ -46,6 +46,7 @@ export default css`
     display: flex;
     flex-direction: column;
     flex: 1;
+    height: 0;
   }
 
   #drawer {

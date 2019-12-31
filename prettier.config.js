@@ -1,1 +1,1 @@
-module.exports = {};
+module.exports = { arrowParens: "always" };

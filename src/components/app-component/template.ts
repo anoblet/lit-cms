@@ -22,12 +22,12 @@ export default function() {
       <div id="title"><a href="/">lit-cms</a></div>
     </div>
     <div id="center">
-      <mwc-linear-progress></mwc-linear-progress>
       <drawer-component id="drawer-component" ?absolute=${this.mobile}
         ><div slot="aside">
           ${drawer.bind(this)()}
         </div>
         <div slot="main">
+          <mwc-linear-progress></mwc-linear-progress>
           <div id="outlet"></div></div
       ></drawer-component>
       <toast-component></toast-component>

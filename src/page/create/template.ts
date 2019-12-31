@@ -18,12 +18,6 @@ export default function() {
       ${cache(
         this.activeTab === 0
           ? html`
-              <form>
-                <select>
-                  <option>Quill</option>
-                  <option>Markdown</option>
-                </select>
-              </form>
               ${new Form({
                 fields: [
                   new Text({ name: "title", label: "Title", value: "" }),

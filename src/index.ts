@@ -29,7 +29,7 @@ import { render } from "lit-html";
 
   const createComponent = (tagName: string, properties = {}) => {
     const element = document.createElement(tagName);
-    Object.keys(properties).map(key => (element[key] = properties[key]));
+    Object.keys(properties).map((key) => (element[key] = properties[key]));
     return element;
   };
 
@@ -64,18 +64,18 @@ import { render } from "lit-html";
   };
 
   const _installRoutes = () => {
-    page("/", async context => {
-      const id = await getPageBySlug("home").then(page => page.id);
+    page("/", async (context) => {
+      const id = await getPageBySlug("home").then((page) => page.id);
       changeRoute(context.path, () => createComponent("page-read", { id }), {
         src: () => import("./markdown/read")
       });
     });
-    page("/page/create", async context => {
+    page("/page/create", async (context) => {
       switch (settings.editor) {
         case "quill":
-          changeRoute(context.path, () => createComponent("page-create"), {
+          changeRoute(context.path, () => createComponent("quill-edit"), {
             shouldCache: false,
-            src: () => import("./page/create")
+            src: () => import("./quill/edit/component")
           });
           break;
         case "markdown":
@@ -86,12 +86,12 @@ import { render } from "lit-html";
           break;
       }
     });
-    page("/page/list", async context => {
+    page("/page/list", async (context) => {
       changeRoute(context.path, () => createComponent("page-list"), {
         src: () => import("./page/list")
       });
     });
-    page("/page/read/:id", async context => {
+    page("/page/read/:id", async (context) => {
       changeRoute(
         context.path,
         () =>
@@ -103,7 +103,7 @@ import { render } from "lit-html";
         }
       );
     });
-    page("/page/edit/:id", async context => {
+    page("/page/edit/:id", async (context) => {
       const page = await getDocument(`pages/${context.params.id}`);
       page.id = context.params.id;
       switch (settings.editor) {
@@ -111,10 +111,10 @@ import { render } from "lit-html";
           changeRoute(
             context.path,
             () =>
-              createComponent("page-edit", {
-                id: context.params.id
+              createComponent("quill-edit", {
+                data: page
               }),
-            { shouldCache: false, src: () => import("./page/edit") }
+            { shouldCache: false, src: () => import("./quill/edit/component") }
           );
           break;
         case "markdown":
@@ -132,14 +132,16 @@ import { render } from "lit-html";
           break;
       }
     });
-    page("/settings", async context => {
+    page("/settings", async (context) => {
       changeRoute(context.path, () => createComponent("settings-component"), {
         shouldCache: true,
         src: () => import("./settings/settings-component")
       });
     });
-    page("/:slug", async context => {
-      const id = await getPageBySlug(context.params.slug).then(page => page.id);
+    page("/:slug", async (context) => {
+      const id = await getPageBySlug(context.params.slug).then(
+        (page) => page.id
+      );
       changeRoute(context.path, () => createComponent("page-read", { id }), {
         src: () => import("./markdown/read")
       });
