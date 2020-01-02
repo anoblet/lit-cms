@@ -12,12 +12,12 @@ export default css`
     flex-direction: column;
   }
 
-  .textarea label {
-    margin-bottom: 1rem;
-  }
-
   label {
     display: block;
+  }
+
+  .textarea label {
+    margin-bottom: 1rem;
   }
 
   button {

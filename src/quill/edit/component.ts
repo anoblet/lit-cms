@@ -7,25 +7,18 @@ import { addDocument, updateDocument } from "@anoblet/firebase";
 import globalStyle from "../../styles/global";
 import page from "page";
 import { stringToSlug } from "@anoblet/string-to-slug";
-import { Page } from "../../page/types";
+import { Page } from "../../page/page";
+import { QuillJs } from "@anoblet/quill-js";
 
 @customElement("quill-edit")
 export class QuillEdit extends BeforeRenderMixin(LitElement) {
   static styles = [globalStyle, style];
   render = template.bind(this);
 
-  @property({type: Object}) data: Page = {
-    body: "",
-    id: "",
-    title: "",
-    slug: "",
-    editor: "quill",
-    sortOrder: 0
-  };
+  @property({ type: Object }) data = new Page();
 
   @query("[name='slug']") slug: HTMLInputElement;
   @query("[name='title']") pageTitle: HTMLInputElement;
-  @query("[name='body']") editor: any;
 
   async beforeRender() {
     await import("@anoblet/quill-js");
@@ -44,7 +37,7 @@ export class QuillEdit extends BeforeRenderMixin(LitElement) {
     event.preventDefault();
     const result = this.data.id
       ? await updateDocument(`pages/${this.data.id}`, this.data)
-      : await addDocument("/pages", this.data);
+      : await addDocument("/pages", {...this.data});
     const appComponent: any = document.querySelector("app-component");
     if (result) {
       appComponent.toast.content = this.data.id

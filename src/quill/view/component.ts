@@ -8,7 +8,7 @@ import template from "./template";
 
 @customElement("markdown-view")
 class QuillViewComponent extends MobxLitElement {
-  @property() public page: Page;
+  @property({ type: Object }) public page: Page;
   private settings = settings;
 
   static styles = [style];
