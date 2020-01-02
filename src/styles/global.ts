@@ -18,7 +18,7 @@ export default css`
 
   input {
     border: 0;
-    width: 100%:
+    width: 100%;
   }
 
   input:focus {
@@ -50,10 +50,6 @@ export default css`
     padding: 1rem;
     border-bottom: 1px solid #000;
     cursor: pointer;
-  }
-
-  summary::-webkit-details-marker {
-    /* display:none; */
   }
 
   #outlet {
