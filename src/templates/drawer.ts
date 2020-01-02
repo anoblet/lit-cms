@@ -9,7 +9,7 @@ export default function() {
           <ul>
             ${this.pages
               ? this.pages.map(
-                  page =>
+                  (page) =>
                     html`
                       <li><a href="/${page.slug}">${page.title}</a></li>
                     `

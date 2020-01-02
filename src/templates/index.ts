@@ -3,7 +3,7 @@ import "@anoblet/card-component";
 import "@anoblet/button-component";
 import "@material/mwc-linear-progress";
 
-import drawer from "../../templates/drawer";
+import drawer from "./drawer";
 import { html } from "lit-element";
 import { menu } from "@anoblet/material-icons";
 

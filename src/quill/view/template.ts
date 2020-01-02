@@ -2,8 +2,6 @@ import { html } from "lit-element";
 import { nothing } from "lit-html";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 
-import("../../page/view");
-
 export default function() {
   return html`
     ${this.settings.showPageTitle

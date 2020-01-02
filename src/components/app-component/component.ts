@@ -12,7 +12,6 @@ import template from "./template";
 @customElement("app-component")
 export class AppComponent extends LitElement {
   @property({ type: Boolean }) mobile: boolean;
-  // @property() outlet: HTMLElement;
   @property() pages;
 
   @query("#drawer-component") drawer: DrawerComponent;

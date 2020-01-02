@@ -48,6 +48,7 @@ class SettingsComponent extends MobxLitElement {
       padding: 0 0.75rem;
     }
   `;
+
   public render() {
     return html`
       <h1>
