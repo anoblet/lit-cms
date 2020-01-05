@@ -1,4 +1,4 @@
-import { customElement, property } from "lit-element";
+import { customElement, html, property } from "lit-element";
 
 import { MobxLitElement } from "@adobe/lit-mobx";
 import { Page } from "../../page/types";
@@ -6,16 +6,37 @@ import { settings } from "../../settings/settings";
 import style from "./style";
 import template from "./template";
 
-@customElement("markdown-view")
-class QuillViewComponent extends MobxLitElement {
-  @property({ type: Object }) public page: Page;
-  private settings = settings;
+const propertyDescriptions = {
+  title: {
+    type: "string",
+    label: "Title"
+  }
+}
 
+@customElement("quill-view")
+class QuillViewComponent extends MobxLitElement {
+  @property({ type: Object }) public data: Page;
+  @property({ type: Boolean }) public edit: boolean;
+  
   static styles = [style];
   render = template.bind(this);
 
-  shouldUpdate(_changedProperties): boolean {
-    if (!this.page) return false;
-    return super.shouldUpdate(_changedProperties);
+  private settings = settings;
+
+  editPage(event) {
+    event.preventDefault();
+    this.edit = true;
   }
+
+  renderProperty(property: any) {
+    if(!this.edit) return property;
+    const type = typeof property;
+    switch (type) {
+      case "string": {
+        return html`
+          <input type="text" value=${property} />
+        `;
+      }
+    }
+  };
 }

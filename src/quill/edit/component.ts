@@ -21,7 +21,7 @@ export class QuillEdit extends BeforeRenderMixin(LitElement) {
   @query("[name='title']") pageTitle: HTMLInputElement;
 
   async beforeRender() {
-    await import("@anoblet/quill-js");
+    await import("@anoblet/quill-js");  
   }
 
   firstUpdated() {

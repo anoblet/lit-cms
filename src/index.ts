@@ -1,14 +1,11 @@
 import "./components/app-component/component";
-import "./markdown/read";
 import "@anoblet/card-component";
 
 import { Settings, settings } from "./settings/settings";
 
 import { AppComponent } from "./components/app-component/component";
 import config from "../etc/config";
-import { getCollection } from "@anoblet/firebase";
-import { getDocument } from "@anoblet/firebase";
-import { initialize } from "@anoblet/firebase";
+import { getCollection, getDocument, initialize } from "@anoblet/firebase";
 import page from "page";
 import { render } from "lit-html";
 
@@ -38,15 +35,19 @@ import { render } from "lit-html";
     component: any,
     options: { shouldCache?: boolean; src?: any } = { shouldCache: true }
   ) => {
+    let component_;
     if (options.src) await options.src();
-    component = component();
-    if (!options.shouldCache || !cache[path]) {
-      app.progress.open();
-      const oldFirstUpdated = component.firstUpdated;
-      component.firstUpdated = () => {
-        oldFirstUpdated.bind(component)();
-        app.progress.close();
-      };
+    if (options.shouldCache && cache[path]) component_ = cache[path];
+    else {
+      component = component();
+      if (!options.shouldCache || !cache[path]) {
+        app.progress.open();
+        const oldFirstUpdated = component.firstUpdated;
+        component.firstUpdated = () => {
+          oldFirstUpdated.bind(component)();
+          app.progress.close();
+        };
+      }
     }
     if (options.shouldCache && !cache[path]) cache[path] = component;
     render(options.shouldCache ? cache[path] : component, app.outlet);
@@ -65,10 +66,14 @@ import { render } from "lit-html";
 
   const _installRoutes = () => {
     page("/", async (context) => {
-      const id = await getPageBySlug("home").then((page) => page.id);
-      changeRoute(context.path, () => createComponent("page-read", { id }), {
-        src: () => import("./markdown/read")
-      });
+      const page = await getPageBySlug("home");
+      changeRoute(
+        context.path,
+        () => createComponent("page-read", { data: page }),
+        {
+          src: () => import("./markdown/read")
+        }
+      );
     });
     page("/page/create", async (context) => {
       switch (settings.editor) {
@@ -92,11 +97,12 @@ import { render } from "lit-html";
       });
     });
     page("/page/read/:id", async (context) => {
+      const page = await getDocument(`pages/${context.params.id}`);
       changeRoute(
         context.path,
         () =>
           createComponent("page-read", {
-            id: context.params.id
+            data: page
           }),
         {
           src: () => import("./markdown/read")
@@ -105,7 +111,6 @@ import { render } from "lit-html";
     });
     page("/page/edit/:id", async (context) => {
       const page = await getDocument(`pages/${context.params.id}`);
-      page.id = context.params.id;
       switch (settings.editor) {
         case "quill":
           changeRoute(
@@ -139,12 +144,14 @@ import { render } from "lit-html";
       });
     });
     page("/:slug", async (context) => {
-      const id = await getPageBySlug(context.params.slug).then(
-        (page) => page.id
+      const page = await getPageBySlug(context.params.slug);
+      changeRoute(
+        context.path,
+        () => createComponent("quill-view", { data: page }),
+        {
+          src: () => import("./quill/view/component")
+        }
       );
-      changeRoute(context.path, () => createComponent("page-read", { id }), {
-        src: () => import("./markdown/read")
-      });
     });
     page();
   };

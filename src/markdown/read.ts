@@ -11,21 +11,9 @@ import { unsafeHTML } from "lit-html/directives/unsafe-html";
 class PageReadComponent extends BeforeRenderMixin(
   MobxReactionUpdate(LitElement)
 ) {
-  @property({ type: String }) id: string;
   @property({ type: String }) data: any;
 
   public settings = settings;
-
-  async beforeRender() {
-    await new Promise(async resolve => {
-      getDocument(`pages/${this.id}`, {
-        callback: document => {
-          this.data = document;
-          resolve();
-        }
-      });
-    });
-  }
 
   static styles = css`
     :host {

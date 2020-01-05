@@ -1,27 +1,23 @@
 import { css } from "lit-element";
 
 export default css`
+  button {
+    margin: inherit;
+  }
+
   form {
     display: grid;
     grid-gap: 1rem;
-  }
-
-  quill-js {
-    display: block;
-    position: relative;
-    flex-direction: column;
   }
 
   label {
     display: block;
   }
 
-  .textarea label {
-    margin-bottom: 1rem;
-  }
-
-  button {
-    margin: inherit;
+  quill-js {
+    display: block;
+    position: relative;
+    flex-direction: column;
   }
 
   .grid {
@@ -35,9 +31,7 @@ export default css`
     flex-direction: column;
   }
 
-  /* [name="body"] {
-    display: flex;
-    flex: 1;
-    height: 10rem;
-  } */
+  .textarea label {
+    margin-bottom: 1rem;
+  }
 `;
