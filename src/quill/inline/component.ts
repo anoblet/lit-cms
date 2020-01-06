@@ -16,6 +16,7 @@ const propertyDescriptions = {
 @customElement("quill-view")
 class QuillViewComponent extends MobxLitElement {
   @property({ type: Object }) public data: Page;
+  @property({ type: Boolean }) public editable: boolean;
   
   static styles = [style];
   render = template.bind(this);
@@ -24,5 +25,18 @@ class QuillViewComponent extends MobxLitElement {
 
   editPage(event) {
     event.preventDefault();
+    this.editable = true;
   }
+
+  renderProperty(property: any) {
+    if(!this.editable) return property;
+    const type = typeof property;
+    switch (type) {
+      case "string": {
+        return html`
+          <input type="text" value=${property} />
+        `;
+      }
+    }
+  };
 }

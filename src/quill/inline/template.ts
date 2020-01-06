@@ -6,7 +6,9 @@ export default function() {
   return html`
     ${this.settings.showPageTitle
       ? html`
-          <span id="title">${this.data.title}</span>
+          <span id="title"
+            >${this.renderProperty(this.data.title)}</span
+          >
         `
       : nothing}
     <div id="editLink">
