@@ -3,7 +3,7 @@ import { LitElement, customElement, property, query } from "lit-element";
 import { BeforeRenderMixin } from "@anoblet/mixins";
 import MDCTabBarFoundation from "@material/tab-bar/foundation";
 import { addDocument } from "@anoblet/firebase";
-import globalStyle from "../../styles/global";
+import globalStyle from "../../styles/global.css";
 import page from "page";
 import template from "./template";
 import { stringToSlug } from "@anoblet/string-to-slug";

@@ -4,7 +4,7 @@ import template from "./template";
 
 import { BeforeRenderMixin } from "@anoblet/mixins";
 import { addDocument, updateDocument } from "@anoblet/firebase";
-import globalStyle from "../../styles/global";
+import globalStyle from "../../styles/global.css";
 import page from "page";
 import { stringToSlug } from "@anoblet/string-to-slug";
 import { Page } from "../../page/page";

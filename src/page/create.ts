@@ -10,7 +10,7 @@ import {
 
 import { BeforeRenderMixin } from "@anoblet/mixins";
 import { addDocument } from "@anoblet/firebase";
-import globalStyle from "../styles/global";
+import globalStyle from "../styles/global.css";
 import page from "page";
 import { stringToSlug } from "@anoblet/string-to-slug";
 

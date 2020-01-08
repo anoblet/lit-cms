@@ -4,7 +4,7 @@ import { DrawerComponent } from "@anoblet/drawer-component";
 import { LinearProgress } from "@material/mwc-linear-progress";
 import { ToastComponent } from "@anoblet/toast-component";
 import { getCollection } from "@anoblet/firebase";
-import globalStyle from "../../styles/global";
+import globalStyle from "../../styles/global.css";
 import { observe } from "@anoblet/match-media";
 import style from "./style.css";
 import template from "./template";
