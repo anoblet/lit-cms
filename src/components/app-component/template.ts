@@ -32,6 +32,5 @@ export default function() {
       ></drawer-component>
       <toast-component></toast-component>
     </div>
-    <div id="footer"></div>
   `;
 }

@@ -22,14 +22,15 @@ export class AppComponent extends LitElement {
   public static styles = [globalStyle, style];
   public render = template.bind(this);
 
-  firstUpdated() {
+  public constructor() {
+    super();
     this.getPages();
-    observe("(max-width: 700px)", result => (this.mobile = result));
+    observe("(max-width: 700px)", (result) => (this.mobile = result));
   }
 
   async getPages() {
     getCollection("pages", {
-      callback: collection => (this.pages = collection),
+      callback: (collection) => (this.pages = collection),
       orderBy: "sortOrder"
     });
   }
