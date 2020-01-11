@@ -1,6 +1,11 @@
+import { createComponent, getPageBySlug } from "./utility";
+
 export const routes = {
   "/": {
-    component: () => createComponent("page-read"),
-    src: () => import("./markdown/read")
+    src: () => import("./markdown/read"),
+    action: async () => {
+      const data = await getPageBySlug("home");
+      return createComponent("page-read", { data });
+    }
   }
 };

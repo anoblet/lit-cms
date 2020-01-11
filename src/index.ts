@@ -8,7 +8,7 @@ import config from "../etc/config";
 import { getDocument, initialize } from "@anoblet/firebase";
 import page from "page";
 import { render } from "lit-html";
-import { getPageBySlug } from "./utility";
+import { createComponent, getPageBySlug } from "./utility";
 
 // Make async so we can control the timing
 (async () => {
@@ -24,12 +24,6 @@ import { getPageBySlug } from "./utility";
   await app.updateComplete;
 
   const cache = {};
-
-  const createComponent = (tagName: string, properties = {}) => {
-    const element = document.createElement(tagName);
-    Object.keys(properties).map((key) => (element[key] = properties[key]));
-    return element;
-  };
 
   const changeRoute = async (
     path: string,
