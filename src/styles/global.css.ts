@@ -12,10 +12,6 @@ export default css`
     grid-gap: 1rem;
   }
 
-  #main {
-    padding: 1rem;
-  }
-
   input {
     border: 0;
     width: 100%;
@@ -50,10 +46,6 @@ export default css`
     padding: 1rem;
     border-bottom: 1px solid #000;
     cursor: pointer;
-  }
-
-  #outlet {
-    padding: 1rem;
   }
 
   mwc-linear-progress {

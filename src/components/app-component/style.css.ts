@@ -90,6 +90,14 @@ export default css`
     align-items: center;
   }
 
+  #main {
+    padding: 1rem;
+  }
+
+  #outlet {
+    padding: 1rem;
+  }
+
   #title {
     text-align: center;
     justify-content: center;
