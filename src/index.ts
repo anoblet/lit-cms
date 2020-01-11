@@ -5,9 +5,10 @@ import { Settings, settings } from "./settings/settings";
 
 import { AppComponent } from "./components/app-component/component";
 import config from "../etc/config";
-import { getCollection, getDocument, initialize } from "@anoblet/firebase";
+import { getDocument, initialize } from "@anoblet/firebase";
 import page from "page";
 import { render } from "lit-html";
+import { getPageBySlug } from "./utility";
 
 // Make async so we can control the timing
 (async () => {
@@ -51,17 +52,6 @@ import { render } from "lit-html";
     }
     if (options.shouldCache && !cache[path]) cache[path] = component;
     render(options.shouldCache ? cache[path] : component, app.outlet);
-  };
-
-  const getPageBySlug = async (slug: string) => {
-    const result = await getCollection("pages", {
-      where: {
-        property: "slug",
-        operator: "==",
-        value: slug
-      }
-    });
-    return result[0];
   };
 
   const _installRoutes = () => {
