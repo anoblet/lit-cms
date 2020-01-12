@@ -1,6 +1,5 @@
-import { customElement, html, property } from "lit-element";
-
 import { MobxLitElement } from "@adobe/lit-mobx";
+import { customElement, property } from "lit-element";
 import { Page } from "../../page/types";
 import { settings } from "../../settings/settings";
 import style from "./style";
