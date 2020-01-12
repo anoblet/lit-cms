@@ -1,12 +1,12 @@
-import "@anoblet/drawer-component";
-import "@anoblet/card-component";
-import "@anoblet/button-component";
-import "@anoblet/toast-component";
-import "@material/mwc-linear-progress";
-
-import drawer from "../../templates/drawer";
-import { html } from "lit-element";
 import { menu } from "@anoblet/material-icons";
+import { html } from "lit-element";
+import drawer from "../../templates/drawer";
+
+import("@anoblet/button-component");
+import("@anoblet/card-component");
+import("@anoblet/drawer-component");
+import("@anoblet/toast-component");
+import("@material/mwc-linear-progress");
 
 export default function() {
   return html`
