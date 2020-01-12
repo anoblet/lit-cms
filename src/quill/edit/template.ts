@@ -1,9 +1,10 @@
-import "@material/mwc-tab-bar";
-import "@material/mwc-tab";
-import "@material/mwc-textfield";
-
 import { html } from "lit-element";
 import { nothing } from "lit-html";
+
+import("@material/mwc-tab");
+import("@material/mwc-tab-bar");
+import("@material/mwc-textfield");
+import("@anoblet/quill-js");
 
 export default function() {
   return html`

@@ -1,14 +1,12 @@
-import { LitElement, customElement, property, query } from "lit-element";
+import { addDocument, updateDocument } from "@anoblet/firebase";
+import { BeforeRenderMixin } from "@anoblet/mixins";
+import { stringToSlug } from "@anoblet/string-to-slug";
+import { customElement, LitElement, property, query } from "lit-element";
+import page from "page";
+import { Page } from "../../page/page";
+import globalStyle from "../../styles/global.css";
 import style from "./style";
 import template from "./template";
-
-import { BeforeRenderMixin } from "@anoblet/mixins";
-import { addDocument, updateDocument } from "@anoblet/firebase";
-import globalStyle from "../../styles/global.css";
-import page from "page";
-import { stringToSlug } from "@anoblet/string-to-slug";
-import { Page } from "../../page/page";
-import { QuillJs } from "@anoblet/quill-js";
 
 @customElement("quill-edit")
 export class QuillEdit extends BeforeRenderMixin(LitElement) {
