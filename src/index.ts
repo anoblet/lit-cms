@@ -34,18 +34,18 @@ import { createComponent, getPageBySlug } from "./utility";
     if (options.src) await options.src();
     if (options.shouldCache && cache[path]) component_ = cache[path];
     else {
-      component = component();
+      component_ = component();
       if (!options.shouldCache || !cache[path]) {
         app.progress.open();
-        const oldFirstUpdated = component.firstUpdated;
-        component.firstUpdated = () => {
-          oldFirstUpdated.bind(component)();
+        const oldFirstUpdated = component_.firstUpdated;
+        component_.firstUpdated = () => {
+          oldFirstUpdated.bind(component_)();
           app.progress.close();
         };
       }
+      if (options.shouldCache && !cache[path]) cache[path] = component_;
     }
-    if (options.shouldCache && !cache[path]) cache[path] = component;
-    render(options.shouldCache ? cache[path] : component, app.outlet);
+    render(component_, app.outlet);
   };
 
   const _installRoutes = () => {
