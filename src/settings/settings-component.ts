@@ -30,8 +30,22 @@ class SettingsComponent extends MobxLitElement {
   }
 
   public static styles = css`
-    #settings {
-      padding: 1rem;
+    li {
+      display: grid;
+      grid-gap: 1rem;
+      grid-template-columns: repeat(2, max-content);
+    }
+
+    summary {
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      list-style-type: none;
+      margin-block-start: 0;
+      margin-block-end: 0;
+      display: grid;
+      grid-gap: 1rem;
     }
 
     .grid {
@@ -56,45 +70,43 @@ class SettingsComponent extends MobxLitElement {
       </h1>
       <details open>
         <summary>Application</summary>
-        <div class="grid">
-          <div class="row">
-            <span>Editor</span>
-            <span class="padding">
-              <select @change=${this.selectEditor}
-                ><option
-                  value="quill"
-                  ?selected=${this.settings.editor === "quill"}
-                  >Quill</option
-                ><option
-                  value="markdown"
-                  ?selected=${this.settings.editor === "markdown"}
-                  >Markdown</option
-                ></select
-              ></span
+        <ul>
+          <li>
+            <label>Editor:</label>
+            <select @change=${this.selectEditor}
+              ><option
+                value="quill"
+                ?selected=${this.settings.editor === "quill"}
+                >Quill</option
+              ><option
+                value="markdown"
+                ?selected=${this.settings.editor === "markdown"}
+                >Markdown</option
+              ></select
             >
-          </div>
-        </div>
-        <details open>
-          <summary>Page</summary>
-          <div id="settings" class="grid">
-            <div class="row">
-              <span class="padding">
-                <input
-                  type="checkbox"
-                  ?checked=${this.settings.showPageTitle}
-                  @click=${this.toggleShowPageTitle}/></span
-              ><span>Show page title</span>
-            </div>
-            <div class="row">
-              <span class="padding">
-                <input
-                  type="checkbox"
-                  ?checked=${this.settings.showEditLink}
-                  @click=${this.toggleShowEditLink}/></span
-              ><span>Show edit link</span>
-            </div>
-          </div>
-        </details>
+          </li>
+          <li>
+            <details open>
+              <summary>Page</summary>
+              <ul>
+                <li>
+                  <input
+                    type="checkbox"
+                    ?checked=${this.settings.showPageTitle}
+                    @click=${this.toggleShowPageTitle}
+                  /><span>Show page title</span>
+                </li>
+                <li>
+                  <input
+                    type="checkbox"
+                    ?checked=${this.settings.showEditLink}
+                    @click=${this.toggleShowEditLink}
+                  /><span>Show edit link</span>
+                </li>
+              </ul>
+            </details>
+          </li>
+        </ul>
       </details>
     `;
   }
