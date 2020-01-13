@@ -4,19 +4,16 @@ export default function() {
   return html`
     <div id="drawer">
       <div class="flex">
-        <details>
-          <summary>Pages</summary>
-          <ul>
-            ${this.pages
-              ? this.pages.map(
-                  (page) =>
-                    html`
-                      <li><a href="/${page.slug}">${page.title}</a></li>
-                    `
-                )
-              : ""}
-          </ul>
-        </details>
+        <ul>
+          ${this.pages
+            ? this.pages.map(
+                (page) =>
+                  html`
+                    <li><a href="/${page.slug}">${page.title}</a></li>
+                  `
+              )
+            : ""}
+        </ul>
         <details>
           <summary>Manage</summary>
           <ul>
