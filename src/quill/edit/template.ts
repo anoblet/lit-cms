@@ -1,6 +1,7 @@
 import { html } from "lit-element";
 import { nothing } from "lit-html";
 
+import("@material/mwc-button");
 import("@material/mwc-tab");
 import("@material/mwc-tab-bar");
 import("@material/mwc-textfield");
@@ -45,6 +46,16 @@ export default function() {
         @change=${this.handleUpdate}
         value=${this.data.sortOrder}
       ></mwc-textfield>
+      ${this.data.editor === "markdown"
+        ? html`
+            <textarea>
+              name="body"
+              .value=${this.data.body}
+              @blur=${this.handleUpdate}
+            ></textarea
+            >
+          `
+        : nothing}
       ${this.data.editor === "quill"
         ? html`
             <quill-js
@@ -55,9 +66,9 @@ export default function() {
             ></quill-js>
           `
         : nothing}
-      <button @click=${this.onSubmit}>
+      <mwc-button outlined @click=${this.onSubmit}>
         Save
-      </button>
+      </mwc-button>
     </form>
   `;
 }

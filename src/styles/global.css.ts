@@ -58,4 +58,9 @@ export default css`
     border-left: 1px solid #000;
     border-right: 1px solid #000;
   }
+
+  mwc-button {
+    --mdc-theme-primary: #000;
+    --mdc-theme-on-primary: white;
+  }
 `;

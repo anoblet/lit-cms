@@ -1,6 +1,10 @@
 import { css } from "lit-element";
 
 export default css`
+  :host {
+    --mdc-theme-primary: #000;
+  }
+  
   button-component::part(button) {
     display: flex;
   }
