@@ -4,7 +4,7 @@ export default css`
   :host {
     --mdc-theme-primary: #000;
   }
-  
+
   button-component::part(button) {
     display: flex;
   }
@@ -96,6 +96,10 @@ export default css`
 
   #main {
     padding: 1rem;
+  }
+
+  #menu button-component {
+    border: 0;
   }
 
   #outlet {
