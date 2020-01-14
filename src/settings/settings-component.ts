@@ -1,11 +1,10 @@
 import { css, customElement, html } from "lit-element";
 import { MobxLitElement } from "@adobe/lit-mobx";
 import { settings } from "./settings";
-import { getDocument, updateDocument } from "@anoblet/firebase";
-import { BeforeRenderMixin } from "@anoblet/mixins";
+import { updateDocument } from "@anoblet/firebase";
 
 @customElement("settings-component")
-class SettingsComponent extends MobxLitElement {
+export class SettingsComponent extends MobxLitElement {
   private settings = settings;
 
   selectEditor(event: any) {
