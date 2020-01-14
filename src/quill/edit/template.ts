@@ -66,9 +66,9 @@ export default function() {
             ></quill-js>
           `
         : nothing}
-      <mwc-button outlined @click=${this.onSubmit}>
+      <button-component @click=${this.onSubmit}>
         Save
-      </mwc-button>
+      </button-component>
     </form>
   `;
 }

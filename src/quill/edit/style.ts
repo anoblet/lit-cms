@@ -1,8 +1,8 @@
 import { css } from "lit-element";
 
 export default css`
-  button {
-    margin: inherit;
+  button-component {
+    width: auto;
   }
 
   form {

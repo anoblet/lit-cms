@@ -6,6 +6,19 @@ export default css`
     text-decoration: none;
   }
 
+  button {
+    margin: 1rem;
+    background: inherit;
+    border: 1px solid #000;
+    padding: 0.5rem;
+  }
+
+  button-component {
+    border: 1px solid #000;
+    padding: 0.5rem;
+    width: max-content;
+  }
+
   card-component {
     border: 1px solid #000;
     padding: 1rem;
@@ -28,13 +41,6 @@ export default css`
     padding-inline-start: 1rem;
     padding-inline-end: 0;
     padding-block-end: 0.5rem;
-  }
-
-  button {
-    margin: 1rem;
-    background: inherit;
-    border: 1px solid #000;
-    padding: 0.5rem;
   }
 
   form {
