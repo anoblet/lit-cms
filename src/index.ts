@@ -31,18 +31,12 @@ import { createComponent, getPageBySlug } from "./utility";
     options: { shouldCache?: boolean; src?: any } = { shouldCache: true }
   ) => {
     let component_;
-    if (options.src) await options.src();
+    app.progress.open();
     if (options.shouldCache && cache[path]) component_ = cache[path];
     else {
+      if (options.src) await options.src();
       component_ = component();
-      if (!options.shouldCache || !cache[path]) {
-        app.progress.open();
-        const oldFirstUpdated = component_.firstUpdated;
-        component_.firstUpdated = () => {
-          oldFirstUpdated.bind(component_)();
-          app.progress.close();
-        };
-      }
+      component_.updateComplete.then(() => app.progress.close());
       if (options.shouldCache && !cache[path]) cache[path] = component_;
     }
     render(component_, app.outlet);
@@ -60,20 +54,10 @@ import { createComponent, getPageBySlug } from "./utility";
       );
     });
     page("/page/create", async (context) => {
-      switch (settings.editor) {
-        case "quill":
-          changeRoute(context.path, () => createComponent("quill-edit"), {
-            shouldCache: false,
-            src: () => import("./quill/edit/component")
-          });
-          break;
-        case "markdown":
-          changeRoute(context.path, () => createComponent("markdown-create"), {
-            shouldCache: false,
-            src: () => import("./markdown/create/component")
-          });
-          break;
-      }
+      changeRoute(context.path, () => createComponent("quill-edit"), {
+        shouldCache: false,
+        src: () => import("./quill/edit/component")
+      });
     });
     page("/page/list", async (context) => {
       changeRoute(context.path, () => createComponent("page-list"), {
@@ -95,31 +79,14 @@ import { createComponent, getPageBySlug } from "./utility";
     });
     page("/page/edit/:id", async (context) => {
       const page = await getDocument(`pages/${context.params.id}`);
-      switch (settings.editor) {
-        case "quill":
-          changeRoute(
-            context.path,
-            () =>
-              createComponent("quill-edit", {
-                data: page
-              }),
-            { shouldCache: false, src: () => import("./quill/edit/component") }
-          );
-          break;
-        case "markdown":
-          changeRoute(
-            context.path,
-            () =>
-              createComponent("markdown-edit", {
-                data: page
-              }),
-            {
-              shouldCache: false,
-              src: () => import("./markdown/edit/component")
-            }
-          );
-          break;
-      }
+      changeRoute(
+        context.path,
+        () =>
+          createComponent("quill-edit", {
+            data: page
+          }),
+        { shouldCache: false, src: () => import("./quill/edit/component") }
+      );
     });
     page("/settings", async (context) => {
       changeRoute(context.path, () => createComponent("settings-component"), {
@@ -128,10 +95,10 @@ import { createComponent, getPageBySlug } from "./utility";
       });
     });
     page("/:slug", async (context) => {
-      const page = await getPageBySlug(context.params.slug);
+      const page = getPageBySlug(context.params.slug);
       changeRoute(
         context.path,
-        () => createComponent("quill-view", { data: page }),
+        () => createComponent("quill-view", { dataPromise: page }),
         {
           src: () => import("./quill/view/component")
         }
