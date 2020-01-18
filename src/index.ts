@@ -36,9 +36,11 @@ import { createComponent, getPageBySlug } from "./utility";
     else {
       if (options.src) await options.src();
       component_ = component();
-      if (options.shouldCache && !cache[path]) cache[path] = component_;
     }
-    component_.updateComplete.then(() => app.progress.close());
+    component_.updateComplete.then(() => {
+      if (options.shouldCache) cache[path] = component_;
+      app.progress.close();
+    });
     render(component_, app.outlet);
   };
 
