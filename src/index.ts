@@ -36,20 +36,20 @@ import { createComponent, getPageBySlug } from "./utility";
     else {
       if (options.src) await options.src();
       component_ = component();
-      component_.updateComplete.then(() => app.progress.close());
       if (options.shouldCache && !cache[path]) cache[path] = component_;
     }
+    component_.updateComplete.then(() => app.progress.close());
     render(component_, app.outlet);
   };
 
   const _installRoutes = () => {
     page("/", async (context) => {
-      const page = await getPageBySlug("home");
       changeRoute(
         context.path,
-        () => createComponent("page-read", { data: page }),
+        () =>
+          createComponent("quill-view", { dataPromise: getPageBySlug("home") }),
         {
-          src: () => import("./markdown/read")
+          src: () => import("./quill/view/component")
         }
       );
     });
@@ -78,27 +78,27 @@ import { createComponent, getPageBySlug } from "./utility";
       );
     });
     page("/page/edit/:id", async (context) => {
-      const page = await getDocument(`pages/${context.params.id}`);
       changeRoute(
         context.path,
         () =>
           createComponent("quill-edit", {
-            data: page
+            dataPromise: getDocument(`pages/${context.params.id}`)
           }),
         { shouldCache: false, src: () => import("./quill/edit/component") }
       );
     });
     page("/settings", async (context) => {
       changeRoute(context.path, () => createComponent("settings-component"), {
-        shouldCache: true,
         src: () => import("./settings/settings-component")
       });
     });
     page("/:slug", async (context) => {
-      const page = getPageBySlug(context.params.slug);
       changeRoute(
         context.path,
-        () => createComponent("quill-view", { dataPromise: page }),
+        () =>
+          createComponent("quill-view", {
+            dataPromise: getPageBySlug(context.params.slug)
+          }),
         {
           src: () => import("./quill/view/component")
         }

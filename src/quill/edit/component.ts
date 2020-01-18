@@ -14,12 +14,14 @@ export class QuillEdit extends BeforeRenderMixin(LitElement) {
   render = template.bind(this);
 
   @property({ type: Object }) data = new Page();
+  @property({ type: Object }) dataPromise;
 
   @query("[name='slug']") slug: HTMLInputElement;
   @query("[name='title']") pageTitle: HTMLInputElement;
 
   async beforeRender() {
-    await import("@anoblet/quill-js");  
+    await import("@anoblet/quill-js");
+    this.data = await this.dataPromise;
   }
 
   firstUpdated() {
@@ -35,7 +37,7 @@ export class QuillEdit extends BeforeRenderMixin(LitElement) {
     event.preventDefault();
     const result = this.data.id
       ? await updateDocument(`pages/${this.data.id}`, this.data)
-      : await addDocument("/pages", {...this.data});
+      : await addDocument("/pages", { ...this.data });
     const appComponent: any = document.querySelector("app-component");
     if (result) {
       appComponent.toast.content = this.data.id
