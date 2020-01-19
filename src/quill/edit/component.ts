@@ -21,7 +21,7 @@ export class QuillEdit extends BeforeRenderMixin(LitElement) {
 
   async beforeRender() {
     await import("@anoblet/quill-js");
-    this.data = await this.dataPromise;
+    this.dataPromise && (this.data = await this.dataPromise);
   }
 
   firstUpdated() {
