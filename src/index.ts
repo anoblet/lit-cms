@@ -1,13 +1,12 @@
-import "./components/app-component/component";
 import "@anoblet/card-component";
-
-import { Settings, settings } from "./settings/settings";
-
-import { AppComponent } from "./components/app-component/component";
-import config from "../etc/config";
 import { getDocument, initialize } from "@anoblet/firebase";
-import page from "page";
 import { render } from "lit-html";
+import page from "page";
+import config from "../etc/config";
+import "./components/app-component/component";
+import { AppComponent } from "./components/app-component/component";
+import "./quill/view/component";
+import { Settings, settings } from "./settings/settings";
 import { createComponent, getPageBySlug } from "./utility";
 
 // Make async so we can control the timing
@@ -27,27 +26,20 @@ import { createComponent, getPageBySlug } from "./utility";
 
   const changeRoute = async (
     path: string,
-    component: any,
-    { shouldCache = true, src }: { shouldCache?: boolean; src?: any }
+    componentFunction: any,
+    { shouldCache = true, source }: { shouldCache?: boolean; source?: any }
   ) => {
-    let component_;
+    let component;
     app.progress.open();
     if (shouldCache && cache[path]) {
-      component_ = cache[path];
-      app.progress.close();
+      component = cache[path];
     } else {
-      if (src) await src();
-      component_ = component();
-      const oldFirstUpdated = component_.firstUpdated;
-      component_.firstUpdated = () => {
-        oldFirstUpdated();
-      };
-      if (shouldCache) cache[path] = component_;
+      source && (await source());
+      component = componentFunction();
+      component.beforeRender && (await component.beforeRender());
+      shouldCache && (cache[path] = component);
     }
-    render(component_, app.outlet);
-  };
-
-  const routeCompleted = () => {
+    render(component, app.outlet);
     app.progress.close();
   };
 
@@ -58,19 +50,19 @@ import { createComponent, getPageBySlug } from "./utility";
         () =>
           createComponent("quill-view", { dataPromise: getPageBySlug("home") }),
         {
-          src: () => import("./quill/view/component")
+          source: () => import("./quill/view/component")
         }
       );
     });
     page("/page/create", async (context) => {
       changeRoute(context.path, () => createComponent("quill-edit"), {
         shouldCache: false,
-        src: () => import("./quill/edit/component")
+        source: () => import("./quill/edit/component")
       });
     });
     page("/page/list", async (context) => {
       changeRoute(context.path, () => createComponent("page-list"), {
-        src: () => import("./page/list")
+        source: () => import("./page/list")
       });
     });
     page("/page/read/:id", async (context) => {
@@ -82,7 +74,7 @@ import { createComponent, getPageBySlug } from "./utility";
             data: page
           }),
         {
-          src: () => import("./markdown/read")
+          source: () => import("./markdown/read")
         }
       );
     });
@@ -93,12 +85,12 @@ import { createComponent, getPageBySlug } from "./utility";
           createComponent("quill-edit", {
             dataPromise: getDocument(`pages/${context.params.id}`)
           }),
-        { shouldCache: false, src: () => import("./quill/edit/component") }
+        { shouldCache: false, source: () => import("./quill/edit/component") }
       );
     });
     page("/settings", async (context) => {
       changeRoute(context.path, () => createComponent("settings-component"), {
-        src: () => import("./settings/settings-component")
+        source: () => import("./settings/settings-component")
       });
     });
     page("/:slug", async (context) => {
@@ -109,7 +101,7 @@ import { createComponent, getPageBySlug } from "./utility";
             dataPromise: getPageBySlug(context.params.slug)
           }),
         {
-          src: () => import("./quill/view/component")
+          source: () => import("./quill/view/component")
         }
       );
     });
@@ -119,4 +111,5 @@ import { createComponent, getPageBySlug } from "./utility";
   _installRoutes();
 })();
 
-export {};
+export { };
+
