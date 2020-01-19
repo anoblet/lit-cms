@@ -40,12 +40,15 @@ import { createComponent, getPageBySlug } from "./utility";
       component_ = component();
       const oldFirstUpdated = component_.firstUpdated;
       component_.firstUpdated = () => {
-        app.progress.close();
         oldFirstUpdated();
       };
       if (shouldCache) cache[path] = component_;
     }
     render(component_, app.outlet);
+  };
+
+  const routeCompleted = () => {
+    app.progress.close();
   };
 
   const _installRoutes = () => {
