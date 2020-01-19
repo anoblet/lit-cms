@@ -28,19 +28,23 @@ import { createComponent, getPageBySlug } from "./utility";
   const changeRoute = async (
     path: string,
     component: any,
-    options: { shouldCache?: boolean; src?: any } = { shouldCache: true }
+    { shouldCache = true, src }: { shouldCache?: boolean; src?: any }
   ) => {
     let component_;
     app.progress.open();
-    if (options.shouldCache && cache[path]) component_ = cache[path];
-    else {
-      if (options.src) await options.src();
-      component_ = component();
-    }
-    component_.updateComplete.then(() => {
-      if (options.shouldCache) cache[path] = component_;
+    if (shouldCache && cache[path]) {
+      component_ = cache[path];
       app.progress.close();
-    });
+    } else {
+      if (src) await src();
+      component_ = component();
+      const oldFirstUpdated = component_.firstUpdated;
+      component_.firstUpdated = () => {
+        app.progress.close();
+        oldFirstUpdated();
+      };
+      if (shouldCache) cache[path] = component_;
+    }
     render(component_, app.outlet);
   };
 
