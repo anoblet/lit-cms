@@ -5,6 +5,7 @@ import page from "page";
 import config from "../etc/config";
 import "./components/app-component/component";
 import { AppComponent } from "./components/app-component/component";
+import "./page-static/component";
 import "./quill/view/component";
 import { Settings, settings } from "./settings/settings";
 import { createComponent, getPageBySlug } from "./utility";
@@ -45,14 +46,9 @@ import { createComponent, getPageBySlug } from "./utility";
 
   const _installRoutes = () => {
     page("/", async (context) => {
-      changeRoute(
-        context.path,
-        () =>
-          createComponent("quill-view", { dataPromise: getPageBySlug("home") }),
-        {
-          source: () => import("./quill/view/component")
-        }
-      );
+      changeRoute(context.path, () => createComponent("page-static"), {
+        source: () => import("./page-static/component")
+      });
     });
     page("/page/create", async (context) => {
       changeRoute(context.path, () => createComponent("quill-edit"), {
@@ -111,5 +107,4 @@ import { createComponent, getPageBySlug } from "./utility";
   _installRoutes();
 })();
 
-export { };
-
+export {};

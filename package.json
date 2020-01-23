@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf public/js && rollup -c rollup.config.js && workbox generateSW",
+    "build": "rimraf public/js && rollup -c rollup.config.js && npm run workbox",
     "dev": "run-p watch start",
     "save": "git add . && git commit -m \"Chore: Save\"",
     "start": "es-dev-server --root-dir public --app-index index.html --preserve-symlinks --file-extensions .ts --node-resolve --babel --open --watch",
