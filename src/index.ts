@@ -10,16 +10,24 @@ import "./quill/view/component";
 import { Settings, settings } from "./settings/settings";
 import { createComponent, getPageBySlug } from "./utility";
 
+const syncSettings = async () => {
+  await new Promise((resolve) => {
+    getDocument("settings/default", {
+      callback: (document: Settings) => {
+        settings.setEditor(document.editor);
+        settings.setShowEditLink(document.showEditLink);
+        settings.setShowPageTitle(document.showPageTitle);
+        resolve();
+      }
+    });
+  });
+};
+
 // Make async so we can control the timing
 (async () => {
   await initialize(config.firebase);
-  await getDocument("settings/default", {
-    callback: (document: Settings) => {
-      settings.setEditor(document.editor);
-      settings.setShowEditLink(document.showEditLink);
-      settings.setShowPageTitle(document.showPageTitle);
-    }
-  });
+  await syncSettings();
+
   const app: AppComponent = document.querySelector("app-component");
   await app.updateComplete;
 
@@ -46,9 +54,16 @@ import { createComponent, getPageBySlug } from "./utility";
 
   const _installRoutes = () => {
     page("/", async (context) => {
-      changeRoute(context.path, () => createComponent("page-static"), {
-        source: () => import("./page-static/component")
-      });
+      changeRoute(
+        context.path,
+        () =>
+          createComponent("quill-view", {
+            dataPromise: getPageBySlug("home")
+          }),
+        {
+          source: () => import("./quill/view/component")
+        }
+      );
     });
     page("/page/create", async (context) => {
       changeRoute(context.path, () => createComponent("quill-edit"), {
@@ -62,15 +77,14 @@ import { createComponent, getPageBySlug } from "./utility";
       });
     });
     page("/page/read/:id", async (context) => {
-      const page = await getDocument(`pages/${context.params.id}`);
       changeRoute(
         context.path,
         () =>
-          createComponent("page-read", {
-            data: page
+          createComponent("quill-view", {
+            dataPromise: getDocument(`pages/${context.params.id}`)
           }),
         {
-          source: () => import("./markdown/read")
+          source: () => import("./quill/view/component")
         }
       );
     });
