@@ -1,6 +1,7 @@
 import { MobxLitElement } from "@adobe/lit-mobx";
 import { BeforeRenderMixin } from "@anoblet/mixins";
 import { customElement, property } from "lit-element";
+import { html, render } from "lit-html";
 import { Page } from "../../page/types";
 import { settings } from "../../settings/settings";
 import style from "./style";
@@ -27,7 +28,16 @@ class QuillViewComponent extends BeforeRenderMixin(MobxLitElement) {
     this.data = await this.dataPromise;
   }
 
-  editPage(event) {
+  async editPage(event) {
     event.preventDefault();
+    await import("../edit/component");
+    const app: AppComponent = document.querySelector("app-component");
+    render(
+      html`
+        <quill-edit .dataPromise=${this.dataPromise}></quill-edit>
+      `,
+      app.outlet
+    );
+    window.history.pushState(null, null, `/page/edit/${this.data.id}`);
   }
 }

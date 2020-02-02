@@ -12,7 +12,8 @@ export default function() {
     <div id="editLink">
       ${this.settings.showEditLink
         ? html`
-            <a href="/page/edit/${this.data.id}">Edit</a>
+            <!-- <a href="/page/edit/${this.data.id}">Edit</a> -->
+            <a href="/page/edit/${this.data.id}" @click=${this.editPage}>Edit</a>
           `
         : nothing}
     </div>
