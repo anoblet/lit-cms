@@ -6,7 +6,6 @@ import("@material/mwc-textfield");
 import("@anoblet/quill-js");
 
 export default function() {
-  console.log(this.data);
   return html`
     <form>
       <mwc-textfield
