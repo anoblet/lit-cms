@@ -2,6 +2,7 @@ import { MobxLitElement } from "@adobe/lit-mobx";
 import { BeforeRenderMixin } from "@anoblet/mixins";
 import { customElement, property } from "lit-element";
 import { html, render } from "lit-html";
+import { AppComponent } from "../../components/app-component/component";
 import { Page } from "../../page/types";
 import { settings } from "../../settings/settings";
 import style from "./style";
