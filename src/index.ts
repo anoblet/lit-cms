@@ -9,6 +9,8 @@ import "./page-static/component";
 import "./quill/view/component";
 import { Settings, settings } from "./settings/settings";
 import { createComponent, getPageBySlug } from "./utility";
+import { BeforeRenderMixin } from "@anoblet/mixins/dist/BeforeRender";
+import { LitElement } from "lit-element";
 
 const syncSettings = async () => {
   await new Promise((resolve) => {
@@ -33,12 +35,18 @@ const syncSettings = async () => {
 
   const cache = {};
 
-  const changeRoute = async (
-    path: string,
-    componentFunction: any,
-    { shouldCache = true, source }: { shouldCache?: boolean; source?: any }
-  ) => {
-    let component;
+  const changeRoute = async ({
+    componentFunction,
+    path,
+    shouldCache = true,
+    source
+  }: {
+    componentFunction: any;
+    path: string;
+    shouldCache?: boolean;
+    source?: any;
+  }) => {
+    let component: HTMLElement | LitElement | BeforeRenderMixin;
     app.progress.open();
     if (shouldCache && cache[path]) {
       component = cache[path];
@@ -54,66 +62,70 @@ const syncSettings = async () => {
 
   const _installRoutes = () => {
     page("/", async (context) => {
-      changeRoute(
-        context.path,
-        () =>
+      changeRoute({
+        path: context.path,
+        componentFunction: () =>
           createComponent("quill-view", {
             dataPromise: getPageBySlug("home")
           }),
-        {
-          source: () => import("./quill/view/component")
-        }
-      );
+        source: () => import("./quill/view/component")
+      });
     });
     page("/page/create", async (context) => {
-      changeRoute(context.path, () => createComponent("quill-edit"), {
+      changeRoute({
+        path: context.path,
+        componentFunction: () => createComponent("quill-edit"),
+        shouldCache: false,
+        source: () => import("./quill/edit/component")
+      });
+    });
+    page(
+      "/page/read/:id",
+      async (context: { path: any; params: { id: any } }) => {
+        changeRoute({
+          path: context.path,
+          componentFunction: () =>
+            createComponent("quill-view", {
+              dataPromise: getDocument(`pages/${context.params.id}`)
+            }),
+          source: () => import("./quill/view/component")
+        });
+      }
+    );
+    page("/page/edit/:id", async (context) => {
+      changeRoute({
+        path: context.path,
+        componentFunction: () =>
+          createComponent("quill-edit", {
+            dataPromise: getDocument(`pages/${context.params.id}`)
+          }),
         shouldCache: false,
         source: () => import("./quill/edit/component")
       });
     });
     page("/page/list", async (context) => {
-      changeRoute(context.path, () => createComponent("page-list"), {
+      changeRoute({
+        path: context.path,
+        componentFunction: () => createComponent("page-list"),
         source: () => import("./page/list")
       });
     });
-    page("/page/read/:id", async (context) => {
-      changeRoute(
-        context.path,
-        () =>
-          createComponent("quill-view", {
-            dataPromise: getDocument(`pages/${context.params.id}`)
-          }),
-        {
-          source: () => import("./quill/view/component")
-        }
-      );
-    });
-    page("/page/edit/:id", async (context) => {
-      changeRoute(
-        context.path,
-        () =>
-          createComponent("quill-edit", {
-            dataPromise: getDocument(`pages/${context.params.id}`)
-          }),
-        { shouldCache: false, source: () => import("./quill/edit/component") }
-      );
-    });
     page("/settings", async (context) => {
-      changeRoute(context.path, () => createComponent("settings-component"), {
+      changeRoute({
+        path: context.path,
+        componentFunction: () => createComponent("settings-component"),
         source: () => import("./settings/settings-component")
       });
     });
     page("/:slug", async (context) => {
-      changeRoute(
-        context.path,
-        () =>
+      changeRoute({
+        path: context.path,
+        componentFunction: () =>
           createComponent("quill-view", {
             dataPromise: getPageBySlug(context.params.slug)
           }),
-        {
-          source: () => import("./quill/view/component")
-        }
-      );
+        source: () => import("./quill/view/component")
+      });
     });
     page();
   };
