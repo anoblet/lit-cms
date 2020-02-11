@@ -43,13 +43,9 @@
   <body>
     <app-component></app-component>
     <script type="module" src="/js/index.js"></script>
-    <script>
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/service-worker.js");
-      }
-    </script>
     <noscript>
       Javascript must be enabled
     </noscript>
+    <div id="snackbar"></div>
   </body>
 </html>

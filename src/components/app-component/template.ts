@@ -19,7 +19,7 @@ export default function() {
           >${menu}</button-component
         >
       </div>
-      <div id="title"><a href="/">lit-cms</a></div>
+      <div id="title"><a href="/">lit-cms (updated)</a></div>
     </div>
     <div id="center">
       <drawer-component id="drawer-component" ?absolute=${this.mobile}

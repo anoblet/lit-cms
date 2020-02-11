@@ -1,5 +1,7 @@
 import "@anoblet/card-component";
 import { getDocument, initialize } from "@anoblet/firebase";
+import { BeforeRenderMixin } from "@anoblet/mixins/dist/BeforeRender";
+import { html, LitElement } from "lit-element";
 import { render } from "lit-html";
 import page from "page";
 import config from "../etc/config";
@@ -9,8 +11,6 @@ import "./page-static/component";
 import "./quill/view/component";
 import { Settings, settings } from "./settings/settings";
 import { createComponent, getPageBySlug } from "./utility";
-import { BeforeRenderMixin } from "@anoblet/mixins/dist/BeforeRender";
-import { LitElement } from "lit-element";
 
 const syncSettings = async () => {
   await new Promise((resolve) => {
@@ -25,10 +25,37 @@ const syncSettings = async () => {
   });
 };
 
+const registerServiceWorker = async () => {
+  import("workbox-window").then(({ Workbox }) => {
+    if ("serviceWorker" in navigator) {
+      const workbox = new Workbox("/service-worker.js");
+      workbox.addEventListener("installed", (event) => {
+        if (event.isUpdate) {
+          (async () => {
+            await import("@material/mwc-snackbar");
+            await import("@material/mwc-button");
+            const reload = () => window.location.reload();
+            const snackbar = html`
+              <mwc-snackbar labelText="Application has been updated">
+                <mwc-button slot="action" @click=${reload}>Refresh</mwc-button>
+              </mwc-snackbar>
+            `;
+            render(snackbar, document.querySelector("#snackbar"));
+            document.querySelector("mwc-snackbar").open();
+          })();
+        }
+      });
+
+      workbox.register();
+    }
+  });
+};
+
 // Make async so we can control the timing
 (async () => {
   await initialize(config.firebase);
   await syncSettings();
+  await registerServiceWorker();
 
   const app: AppComponent = document.querySelector("app-component");
   await app.updateComplete;
