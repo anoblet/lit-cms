@@ -1,6 +1,7 @@
+import globals from "rollup-plugin-node-globals";
 import resolve from "rollup-plugin-node-resolve";
+import replace from "rollup-plugin-replace";
 import { terser } from "rollup-plugin-terser";
-import globals from 'rollup-plugin-node-globals';
 
 module.exports = {
   input: "./service-worker.js",
@@ -11,7 +12,9 @@ module.exports = {
   plugins: [
     globals(),
     resolve(),
-    terser(),
-  ],
-  preserveSymlinks: true
+    replace({
+      "process.env.NODE_ENV": JSON.stringify("production")
+    }),
+    terser()
+  ]
 };

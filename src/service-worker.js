@@ -1,19 +1,16 @@
-importScripts(
-  "https://storage.googleapis.com/workbox-cdn/releases/4.0.0/workbox-sw.js"
-);
-
 import { registerRoute } from "workbox-routing";
+import { StaleWhileRevalidate } from "workbox-strategies/StaleWhileRevalidate";
+import { precacheAndRoute } from "workbox-precaching";
+import { skipWaiting, clientsClaim } from "workbox-core";
 
-// workbox.setConfig({ debug: true });
-
-workbox.core.skipWaiting();
-workbox.core.clientsClaim();
+skipWaiting();
+clientsClaim();
 
 registerRoute(
   /\.js$/,
-  new workbox.strategies.StaleWhileRevalidate({
+  new StaleWhileRevalidate({
     cacheName: "js-cache"
   })
 );
 
-workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
+precacheAndRoute(self.__WB_MANIFEST);
