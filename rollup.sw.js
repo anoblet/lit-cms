@@ -12,9 +12,9 @@ module.exports = {
   plugins: [
     globals(),
     resolve(),
-    replace({
-      "process.env.NODE_ENV": JSON.stringify("production")
-    }),
+    // replace({
+    //   "process.env.NODE_ENV": JSON.stringify("production")
+    // }),
     terser()
   ]
 };
