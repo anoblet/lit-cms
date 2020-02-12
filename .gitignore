@@ -3,3 +3,4 @@
 node_modules
 public/js
 public/service-worker.js
+service-worker.js
