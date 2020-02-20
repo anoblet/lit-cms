@@ -8,10 +8,10 @@
     "commit": "git-cz",
     "dev": "run-p watch start",
     "save": "git add . && git commit -m \"Chore: Save\"",
+    "service-worker": "node workbox-build.js && rollup -c rollup.service-worker.js && rimraf tmp",
     "start": "es-dev-server --root-dir public --app-index index.html --preserve-symlinks --file-extensions .ts --node-resolve --babel --open --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "rimraf public/js && rollup -c rollup.config.dev.js --watch",
-    "workbox": "node workbox.js && rollup -c rollup.sw.js"
+    "watch": "rimraf public/js && rollup -c rollup.config.dev.js --watch"
   },
   "author": "",
   "license": "ISC",

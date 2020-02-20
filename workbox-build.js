@@ -1,7 +1,7 @@
 const { injectManifest } = require("workbox-build");
 
 const swSrc = "src/service-worker.js";
-const swDest = "service-worker.js";
+const swDest = "tmp/service-worker.js";
 
 const buildServiceWorker = () => {
   injectManifest({
