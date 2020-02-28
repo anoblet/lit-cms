@@ -73,7 +73,7 @@ const registerServiceWorker = async () => {
     shouldCache?: boolean;
     source?: any;
   }) => {
-    let component: HTMLElement | LitElement | BeforeRenderMixin;
+    let component: any;
     app.progress.open();
     if (shouldCache && cache[path]) {
       component = cache[path];
@@ -153,6 +153,12 @@ const registerServiceWorker = async () => {
           }),
         source: () => import("./quill/view/component")
       });
+    });
+    let callback: () => any;
+    app.drawer.aside.addEventListener("transitionend", () => callback());
+    page.exit((ctx, next) => {
+      callback = next;
+      app.drawer.close();
     });
     page();
   };

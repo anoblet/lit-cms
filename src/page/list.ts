@@ -1,19 +1,23 @@
-import { LitElement, css, customElement, html, property } from "lit-element";
-import { deleteDocument, getCollection } from "@anoblet/firebase";
-
+import { deleteDocument, getCollection, getDocument } from "@anoblet/firebase";
 import { BeforeRenderMixin } from "@anoblet/mixins";
+import { css, customElement, html, LitElement, property } from "lit-element";
 import page from "page";
 
 @customElement("page-list")
 class PageListComponent extends BeforeRenderMixin(LitElement) {
   @property() data;
+  @property() sortedData;
+  @property() __properties;
 
   async beforeRender() {
     await getCollection("pages", {
-      callback: collection => (this.data = collection),
-      orderBy: "sortOrder"
+      callback: (collection) => (this.data = collection)
     });
+    this.__properties = (await getDocument(`pages/__properties`)) || {
+      sortOrder: []
+    };
   }
+
   create() {
     page("/page/create");
   }
@@ -23,6 +27,31 @@ class PageListComponent extends BeforeRenderMixin(LitElement) {
     const result = confirm("Are you sure?");
     if (result) deleteDocument(`pages/${event.composedPath()[0].dataset.id}`);
   }
+
+  sort() {
+    const sortedData = [];
+    const getId = (item) => this.data.find;
+    this.__properties.sortOrder.map((item) => {
+      sortedData.push(this.data.find(({ id }) => id === item));
+    });
+  }
+
+  sortIncrease(event) {
+    const sortOrder = this.__properties.sortOrder;
+    const id = event.target.dataset.id;
+    let index = sortOrder.indexOf(id);
+    if (index === -1) {
+      sortOrder.push(id);
+      index = sortOrder.length - 1;
+    }
+    if (sortOrder[index - 1])
+      [sortOrder[index - 1], sortOrder[index]] = [
+        sortOrder[index],
+        sortOrder[index - 1]
+      ];
+  }
+
+  sortDecrease() {}
 
   static styles = css`
     :host {
@@ -36,10 +65,24 @@ class PageListComponent extends BeforeRenderMixin(LitElement) {
       grid-gap: 1rem;
     }
 
+    .actions {
+      display: flex;
+    }
+
+    .actions > * {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .row {
       display: grid;
       grid-template-columns: max-content auto max-content;
       grid-gap: 1rem;
+    }
+
+    .sort {
+      display: grid;
     }
 
     button-component {
@@ -60,17 +103,28 @@ class PageListComponent extends BeforeRenderMixin(LitElement) {
           <span>Title</span>
           <span>Actions</span>
         </div>
-        ${this.data.map(
+        ${this.sortedData.map(
           (page, index) => html`
             <div class="row">
-              <span> ${index}</span><span>${page.title}</span
-              ><span
-                ><a href="/${page.slug}">View</a>
+              <span> ${index}</span><span>${page.title}</span>
+              <div class="actions">
+                <a href="/${page.slug}">View</a>
                 <a href="/page/edit/${page.id}">Edit</a>
-                <a href="" data-id=${page.id} @click=${this.delete}
-                  >Delete</a
-                ></span
-              >
+                <a href="" data-id=${page.id} @click=${this.delete}>Delete</a>
+                <div class="sort">
+                  <span
+                    data-id=${page.id}
+                    data-index=${index}
+                    @click=${this.sortIncrease}
+                    >up</span
+                  ><span
+                    data-id=${page.id}
+                    data-index=${index}
+                    @click=${this.sortDecrease}
+                    >down</span
+                  >
+                </div>
+              </div>
             </div>
           `
         )}
