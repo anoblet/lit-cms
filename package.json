@@ -44,7 +44,7 @@
     "@anoblet/mixins": "0.0.3",
     "@anoblet/quill-js": "0.0.3",
     "@anoblet/string-to-slug": "0.0.1",
-    "@material/mwc-linear-progress": "^0.13.0",
+    "@material/mwc-linear-progress": "^0.14.0",
     "lit-element": "^2.2.1",
     "mobx": "^5.13.0",
     "page": "^1.11.5",
