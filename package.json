@@ -33,7 +33,7 @@
     "stylelint-config-standard": "^20.0.0"
   },
   "dependencies": {
-    "@adobe/lit-mobx": "0.0.2",
+    "@adobe/lit-mobx": "0.0.3",
     "@anoblet/button-component": "0.0.2",
     "@anoblet/card-component": "^1.0.3",
     "@anoblet/drawer-component": "^0.0.1",
